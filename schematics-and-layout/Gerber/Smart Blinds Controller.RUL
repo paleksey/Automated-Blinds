@@ -1,0 +1,5 @@
+DRC Rules Export File for PCB: C:\ProgramData\Altium\CircuitMaker {D03742FE-1FED-4450-AAFD-B790D92102AA}\Projects\CFCE8116-AD56-4640-95F6-D4D2385CC26B\64894f44-93c5-4dc1-8377-2d5d79c2aa3f\Smart Blinds Controller.CMPcbDoc
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=6.00
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=10.00
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=4.00
