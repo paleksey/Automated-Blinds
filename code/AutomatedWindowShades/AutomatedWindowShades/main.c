@@ -8,19 +8,24 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-unsigned int ElapsedFourSeconds = 0; // New counter variable
-
-// variables for automated shades state machine 
-typedef enum {open, closed} current_state = open;
-typedef enum {yes, no} light, previous_light;
-typedef enum {open, close, stay_put} blinds;
-unsigned int hits = 0;
 
 #define AND &&
 #define OR ||
-	
-	
-	typedef enum { false, true } bool;
+
+
+// VARIABLES FOR AUTOMATED SHADES STATE MACHINE 
+typedef enum {light, dark} outside_conditions;
+outside_conditions current_state = light;
+
+typedef enum {yes, no} light_bool;
+light_bool light_now;
+light_bool light_before;
+
+unsigned int hits = 0;
+
+unsigned int ElapsedFourSeconds = 0; // New counter variable
+
+
 
 int main(void)
 {
@@ -57,8 +62,6 @@ int main(void)
 
 ISR(TIMER1_COMPA_vect) {
 	
-	int light;
-	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
 	
@@ -75,31 +78,30 @@ ISR(TIMER1_COMPA_vect) {
 		
 		// compare ADC to set value
 		if (ADC >= 523) {
-			light = yes;
+			light_now = yes;
 		} else {
-			light = no;
+			light_now = no;
 		}
 		
 		// figure out number of hits
-		if (previous_light == light) {
+		if (light_before == light_now) {
 			if (hits < 5) {
 				hits++;
 			}
 		} else {
 			hits = 0;
 		}
-		previous_light = light;
+		light_before = light_now;
 		
 		// determine state machine output (what should the blinds do next)
-		if (current_state == closed AND light == yes AND hits == 5) {
-			current_state = open;
-			blinds = open;
-		} else if (current_state == open AND light == no AND hits == 5) {
-			current_state = closed;
-			blinds = close;
+		if (current_state == dark AND light_now == yes AND hits == 5) {
+			current_state = light;
+			// openBlinds();
+		} else if (current_state == light AND light_now == no AND hits == 5) {
+			current_state = dark;
+			// closeBlinds();
 		} else {
 			current_state = current_state;
-			blinds = stay_put;
 		}
 		
 		// Clear ADIF by writing one to it
