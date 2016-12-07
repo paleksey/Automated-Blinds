@@ -28,6 +28,12 @@ unsigned int ElapsedFourSeconds = 0; // New counter variable
 
 int ADCval;
 
+volatile uint8_t portbhistory = 0xFF;     // default is high because the pull-up
+
+volatile uint32_t max_height = 0;
+volatile uint32_t current_height = 0;
+
+
 int main(void)
 {
 	
@@ -36,8 +42,8 @@ int main(void)
 	TCCR1B |= (1 << WGM12);                                // Configure timer 1 for CTC mode
 	TIMSK1 |= (1 << OCIE1A);                               // Enable CTC interrupt
 	
+
 	// CONFIGURE THE ADC (FOR READING THE LDR)
-	
 		//int ADCval;
 	ADMUX |= 1 << REFS0;                                   // Set AVcc as the reference voltage for the ADC
 		ADMUX &= ~(1 << ADLAR);		// Clear for 10 bit resolution
@@ -47,12 +53,20 @@ int main(void)
 	// ADCSRA = 1 << ADIE                                     // Enable interrupts function in ADC
 	//ADCSRA |= (1 << ADEN);                                   // Turn on the ADC feature
 	
+
+	// CONFIGURE THE INTERRUPTS FOR THE BUTTONS
+	PCICR |= (1 << PCIE1);                               // Turn on pin interrupts for PD pins
+	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11);              // Mask Interrupts for only the pins you need
+
+
 	// ENABLE GLOBAL INTERRUPTS
 	sei(); 
+
 
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
 	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
 	TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
+
 	
 	// set all LEDs as outputs
 	DDRD |= (1 << DDD2) | (1 << DDD1) | (1 << DDD0);
@@ -66,6 +80,66 @@ int main(void)
     }
 	
 }
+
+
+
+
+
+ISR(PCINT1_vect) {
+	
+	uint8_t changedbits;
+
+	changedbits = PIND ^ portbhistory;
+	portbhistory = PIND;	
+	
+	// check if programming button is pressed
+	if (changedbits & (1<< PC3)) {
+		
+		// disable interrupts
+		
+		// reset variable -> now we are assuming shades are at the top
+		current_height = 0;
+		
+		// force the servo to move down
+		// servo(down);
+		
+		// start keeping track of servo position
+		while (PC3 == 0) {
+			current_height = current_height + 1;
+		}
+		
+		// update the max height so now we know where bottom is
+		max_height = current_height;
+		
+		// turn the interrupts back on
+		sei();
+		
+		
+		
+	// check if up button is pressed
+	} else if (changedbits & (1 << PC1)) {
+		
+		// disable interrupts
+		
+		// check position of blinds
+		if (current_height > 0) {
+			//servo(move_up);
+			while (PC1 == 0 && current_height > 0) {
+				current_height = current_height - 1;
+			} 
+			// servo(stop);
+		}
+		
+		/* PCINT0 changed */
+		// enable interrupts
+		sei();
+	}
+		
+	
+}
+
+
+
 
 
 void turnOnLeds(int color) {
@@ -95,6 +169,9 @@ void turnOnLeds(int color) {
 	}
 	
 }
+
+
+
 
 ISR(TIMER1_COMPA_vect) {
 	
@@ -128,7 +205,6 @@ ISR(TIMER1_COMPA_vect) {
 				hits++;
 			}
 		} else {
-			
 			hits = 0;
 		}
 		light_before = light_now;
@@ -193,3 +269,4 @@ ISR(TIMER1_COMPA_vect) {
 // test if polling block triggers correctly every X time
 // test with a LED at each point
 // make sure my custom variables work
+// what if something happens, when something else is happening
