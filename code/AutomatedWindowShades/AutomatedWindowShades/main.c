@@ -8,6 +8,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 	#include <stdint.h>
+#include <util/delay.h>
 
 
 #define AND &&
@@ -28,10 +29,13 @@ unsigned int ElapsedFourSeconds = 0; // New counter variable
 
 int ADCval;
 
-volatile uint8_t portbhistory = 0xFF;     // default is high because the pull-up
+volatile uint8_t portbhistory = 0x7F;     // default is high because the pull-up
 
 volatile uint32_t max_height = 0;
 volatile uint32_t current_height = 0;
+
+
+uint8_t changedbits; // make not global later
 
 
 int main(void)
@@ -54,10 +58,14 @@ int main(void)
 	//ADCSRA |= (1 << ADEN);                                   // Turn on the ADC feature
 	
 
+	// CONFIGURE THE BUTTONS
+	DDRC &= ~(1 << PC1) | ~(1 << PC2) | ~(1 << PC3)| ~(1 << PC6);  // make the up button an input (clear bit)
+	PORTC |= (1 << PC1) | (1 << PC2) | (1 << PC3) | (1 << PC6);  // make the up button tied high (set bit)
+
 	// CONFIGURE THE INTERRUPTS FOR THE BUTTONS
 	PCICR |= (1 << PCIE1);                               // Turn on pin interrupts for PD pins
-	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11);              // Mask Interrupts for only the pins you need
-
+	//PCMSK1 |= (1 << PCINT9) | (1 << PCINT11);              // Mask Interrupts for only the pins you need
+	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11) | (1 << PCINT10); 
 
 	// ENABLE GLOBAL INTERRUPTS
 	sei(); 
@@ -65,7 +73,7 @@ int main(void)
 
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
 	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
-	TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
+	// TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
 
 	
 	// set all LEDs as outputs
@@ -77,6 +85,8 @@ int main(void)
     /* Replace with your application code */
     while (1) 
     {
+		//PORTD = PORTD ^ 0x04;	// Toggle the RGB
+		//_delay_ms(500);
     }
 	
 }
@@ -87,52 +97,59 @@ int main(void)
 
 ISR(PCINT1_vect) {
 	
-	uint8_t changedbits;
+	
 
-	changedbits = PIND ^ portbhistory;
-	portbhistory = PIND;	
+	changedbits = PINC ^ portbhistory;
+	portbhistory = PINC;	
+
 	
 	// check if programming button is pressed
 	if (changedbits & (1<< PC3)) {
 		
-		// disable interrupts
+		turnOnLeds(3, 1);
 		
-		// reset variable -> now we are assuming shades are at the top
-		current_height = 0;
-		
-		// force the servo to move down
-		// servo(down);
-		
-		// start keeping track of servo position
-		while (PC3 == 0) {
-			current_height = current_height + 1;
-		}
-		
-		// update the max height so now we know where bottom is
-		max_height = current_height;
-		
-		// turn the interrupts back on
-		sei();
+		//// disable interrupts
+		//
+		//// reset variable -> now we are assuming shades are at the top
+		//current_height = 0;
+		//
+		//// force the servo to move down
+		//// servo(down);
+		//
+		//// start keeping track of servo position
+		//while (PC3 == 0) {
+			//current_height = current_height + 1;
+		//}
+		//
+		//// update the max height so now we know where bottom is
+		//max_height = current_height;
+		//
+		//// turn the interrupts back on
+		//sei();
 		
 		
 		
 	// check if up button is pressed
 	} else if (changedbits & (1 << PC1)) {
 		
-		// disable interrupts
+		turnOnLeds(0, 1);
 		
-		// check position of blinds
-		if (current_height > 0) {
-			//servo(move_up);
-			while (PC1 == 0 && current_height > 0) {
-				current_height = current_height - 1;
-			} 
-			// servo(stop);
-		}
-		
-		/* PCINT0 changed */
-		// enable interrupts
-		sei();
+		//// disable interrupts
+		//
+		//// check position of blinds
+		//if (current_height > 0) {
+			////servo(move_up);
+			//while (PC1 == 0 && current_height > 0) {
+				//current_height = current_height - 1;
+			//} 
+			//// servo(stop);
+		//}
+		//
+		///* PCINT0 changed */
+		//// enable interrupts
+		//sei();
+	} else if (changedbits & (1 << PC2)) {
+		turnOnLeds(2, 1);
 	}
 		
 	
@@ -142,28 +159,55 @@ ISR(PCINT1_vect) {
 
 
 
-void turnOnLeds(int color) {
+void turnOnLeds(int color, int toggle) {
 
-	// make LEDs all high to disable them
-	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
-	
-	
 	// red
 	if (color == 0) {
-			PORTD &= ~(1 << PD0); //  turn on PD1 (PD1 is grounded)	
+		if (toggle) {
+			PORTD = PORTD ^ 0x01;	// Toggle the RGB	
+			//PIND = _BV(PD0);
+		}
+		else {
+			// make LEDs all high to disable them
+			PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
 			
+			PORTD &= ~(1 << PD0); //  turn on PD1 (PD1 is grounded)	
+		}
 	// blue
 	} else if (color == 1) {
-		PORTD &= ~(1 << PD1); //  turn on PD1 (PD1 is grounded)	
-		
+		if (toggle) {
+			PORTD = PORTD ^ 0x02;	// Toggle the RGB
+		}
+		else {
+			// make LEDs all high to disable them
+			PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+			
+			PORTD &= ~(1 << PD1); //  turn on PD1 (PD1 is grounded)	
+		}
 	// green
 	} else if (color == 2) {
-		PORTD &= ~(1 << PD2); //  turn on PD1 (PD1 is grounded)	
+		if (toggle) {
+			PORTD = PORTD ^ 0x04;	// Toggle the RGB	
+		}
+		else {
+			// make LEDs all high to disable them
+			PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+			
+			PORTD &= ~(1 << PD2); //  turn on PD1 (PD1 is grounded)	
+		}
 	// white 
 	} else if (color == 3) {
-		PORTD &= ~(1 << PD2);
-		PORTD &= ~(1 << PD1);
-		PORTD &= ~(1 << PD0);
+		if (toggle) {
+			PORTD = PORTD ^ 0x07;	// Toggle the RGB
+		}
+		else {
+			// make LEDs all high to disable them
+			PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+			
+			PORTD &= ~(1 << PD2);
+			PORTD &= ~(1 << PD1);
+			PORTD &= ~(1 << PD0);
+		}
 	} else {
 		// do nothing
 	}
@@ -212,14 +256,14 @@ ISR(TIMER1_COMPA_vect) {
 		// determine state machine output (what should the blinds do next)
 		if (current_state == dark AND light_now == yes AND hits == 2) {
 			current_state = light;
-			turnOnLeds(2);
+			turnOnLeds(2, 0);
 			// aleskeyfunction(2);
 		} else if (current_state == light AND light_now == no AND hits == 2) {
 			current_state = dark;
-			turnOnLeds(1);
+			turnOnLeds(1, 0);
 			// aleskesyfunction(0);
 		} else {
-			turnOnLeds(3);
+			turnOnLeds(3, 0);
 			current_state = current_state;
 		}
 		
