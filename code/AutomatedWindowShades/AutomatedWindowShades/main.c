@@ -7,6 +7,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+	#include <stdint.h>
 
 
 #define AND &&
@@ -19,13 +20,13 @@ outside_conditions current_state = light;
 
 typedef enum {yes, no} light_bool;
 light_bool light_now;
-light_bool light_before;
+light_bool light_before = no;
 
 unsigned int hits = 0;
 
 unsigned int ElapsedFourSeconds = 0; // New counter variable
 
-
+int ADCval;
 
 int main(void)
 {
@@ -35,22 +36,29 @@ int main(void)
 	TCCR1B |= (1 << WGM12);                                // Configure timer 1 for CTC mode
 	TIMSK1 |= (1 << OCIE1A);                               // Enable CTC interrupt
 	
-	
 	// CONFIGURE THE ADC (FOR READING THE LDR)
+	
+		//int ADCval;
 	ADMUX |= 1 << REFS0;                                   // Set AVcc as the reference voltage for the ADC
+		ADMUX &= ~(1 << ADLAR);		// Clear for 10 bit resolution
 	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);  // Enable a prescaler
+		ADCSRA |= (1 << ADEN);		// Enable the ADC
 	// ADMUX |= 1 << ADLAR;                                   // 8-bit or 10-bit results
 	// ADCSRA = 1 << ADIE                                     // Enable interrupts function in ADC
-	ADCSRA |= 1 << ADEN;                                   // Turn on the ADC feature
-	
+	//ADCSRA |= (1 << ADEN);                                   // Turn on the ADC feature
 	
 	// ENABLE GLOBAL INTERRUPTS
-	sei();                                                 
-	
-	
+	sei(); 
+
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
 	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
 	TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
+	
+	// set all LEDs as outputs
+	DDRD |= (1 << DDD2) | (1 << DDD1) | (1 << DDD0);
+	
+	// make LEDs all high to disable them
+	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
 	
     /* Replace with your application code */
     while (1) 
@@ -60,52 +68,88 @@ int main(void)
 }
 
 
+void turnOnLeds(int color) {
+
+	// make LEDs all high to disable them
+	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+	
+	
+	// red
+	if (color == 0) {
+			PORTD &= ~(1 << PD0); //  turn on PD1 (PD1 is grounded)	
+			
+	// blue
+	} else if (color == 1) {
+		PORTD &= ~(1 << PD1); //  turn on PD1 (PD1 is grounded)	
+		
+	// green
+	} else if (color == 2) {
+		PORTD &= ~(1 << PD2); //  turn on PD1 (PD1 is grounded)	
+	// white 
+	} else if (color == 3) {
+		PORTD &= ~(1 << PD2);
+		PORTD &= ~(1 << PD1);
+		PORTD &= ~(1 << PD0);
+	} else {
+		// do nothing
+	}
+	
+}
+
 ISR(TIMER1_COMPA_vect) {
 	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
+	//DDRD |= (1 << DDD0) ; // sets bit DDD0 to 1 within register DDRD (PD0 is now an output)
+	//PORTD &= ~(1 << PORTD0); //  turn off PD0 (PD0 is grounded)
+	//PORTD = PORTD ^ 0x01;	// Toggle the RGB
 	
 	// check if 2 minutes (120 seconds) have elapsed
-	if (ElapsedFourSeconds == 30) {
+	if (ElapsedFourSeconds == 1) {
 		
 		ElapsedFourSeconds = 0;  // Reset counter variable
 		
-		// take a reading of the LDR sensor
+		// Take a reading of the LDR sensor
 		ADCSRA |= 1 << ADSC; // start the first conversion
-		
-		// we are synchronously waiting for the conversion to complete
-		while(!(ADCSRA & (1<<ADIF)));
-		
+
+		//// we are synchronously waiting for the conversion to complete
+		while(ADCSRA & (1<<ADIF));
+		//
 		// compare ADC to set value
 		if (ADC >= 523) {
 			light_now = yes;
 		} else {
 			light_now = no;
 		}
-		
+
 		// figure out number of hits
 		if (light_before == light_now) {
-			if (hits < 5) {
+			if (hits < 2) {
 				hits++;
 			}
 		} else {
+			
 			hits = 0;
 		}
 		light_before = light_now;
 		
 		// determine state machine output (what should the blinds do next)
-		if (current_state == dark AND light_now == yes AND hits == 5) {
+		if (current_state == dark AND light_now == yes AND hits == 2) {
 			current_state = light;
-			// openBlinds();
-		} else if (current_state == light AND light_now == no AND hits == 5) {
+			turnOnLeds(2);
+			// aleskeyfunction(2);
+		} else if (current_state == light AND light_now == no AND hits == 2) {
 			current_state = dark;
-			// closeBlinds();
+			turnOnLeds(1);
+			// aleskesyfunction(0);
 		} else {
+			turnOnLeds(3);
 			current_state = current_state;
 		}
 		
 		// Clear ADIF by writing one to it
-		ADCSRA|=(1<<ADIF);
+		// Clearing ADC bit
+		ADCSRA|=(1<<ADIF);		
 		
 	}
 	

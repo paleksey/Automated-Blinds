@@ -3,62 +3,62 @@ AutomatedWindowShades.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000200  2**0
+  0 .data         00000002  00800100  00000214  000002a8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000018c  00000000  00000000  00000074  2**1
+  1 .text         00000214  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000007  00800100  00800100  00000200  2**0
+  2 .bss          00000008  00800102  00800102  000002aa  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000200  2**0
+  3 .comment      00000030  00000000  00000000  000002aa  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000230  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002dc  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000028  00000000  00000000  0000026c  2**0
+  5 .debug_aranges 00000030  00000000  00000000  00000318  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000735  00000000  00000000  00000294  2**0
+  6 .debug_info   000007bd  00000000  00000000  00000348  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000063d  00000000  00000000  000009c9  2**0
+  7 .debug_abbrev 0000068c  00000000  00000000  00000b05  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000002c0  00000000  00000000  00001006  2**0
+  8 .debug_line   00000338  00000000  00000000  00001191  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000005c  00000000  00000000  000012c8  2**2
+  9 .debug_frame  0000008c  00000000  00000000  000014cc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003ec  00000000  00000000  00001324  2**0
+ 10 .debug_str    000003f2  00000000  00000000  00001558  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000007d  00000000  00000000  00001710  2**0
+ 11 .debug_loc    000000cb  00000000  00000000  0000194a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000018  00000000  00000000  0000178d  2**0
+ 12 .debug_ranges 00000020  00000000  00000000  00001a15  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
 
 00000000 <__vectors>:
    0:	19 c0       	rjmp	.+50     	; 0x34 <__ctors_end>
-   2:	28 c0       	rjmp	.+80     	; 0x54 <__bad_interrupt>
-   4:	27 c0       	rjmp	.+78     	; 0x54 <__bad_interrupt>
-   6:	26 c0       	rjmp	.+76     	; 0x54 <__bad_interrupt>
-   8:	25 c0       	rjmp	.+74     	; 0x54 <__bad_interrupt>
-   a:	24 c0       	rjmp	.+72     	; 0x54 <__bad_interrupt>
-   c:	23 c0       	rjmp	.+70     	; 0x54 <__bad_interrupt>
-   e:	22 c0       	rjmp	.+68     	; 0x54 <__bad_interrupt>
-  10:	21 c0       	rjmp	.+66     	; 0x54 <__bad_interrupt>
-  12:	20 c0       	rjmp	.+64     	; 0x54 <__bad_interrupt>
-  14:	1f c0       	rjmp	.+62     	; 0x54 <__bad_interrupt>
-  16:	41 c0       	rjmp	.+130    	; 0x9a <__vector_11>
-  18:	1d c0       	rjmp	.+58     	; 0x54 <__bad_interrupt>
-  1a:	1c c0       	rjmp	.+56     	; 0x54 <__bad_interrupt>
-  1c:	1b c0       	rjmp	.+54     	; 0x54 <__bad_interrupt>
-  1e:	1a c0       	rjmp	.+52     	; 0x54 <__bad_interrupt>
-  20:	19 c0       	rjmp	.+50     	; 0x54 <__bad_interrupt>
-  22:	18 c0       	rjmp	.+48     	; 0x54 <__bad_interrupt>
-  24:	17 c0       	rjmp	.+46     	; 0x54 <__bad_interrupt>
-  26:	16 c0       	rjmp	.+44     	; 0x54 <__bad_interrupt>
-  28:	15 c0       	rjmp	.+42     	; 0x54 <__bad_interrupt>
-  2a:	14 c0       	rjmp	.+40     	; 0x54 <__bad_interrupt>
-  2c:	13 c0       	rjmp	.+38     	; 0x54 <__bad_interrupt>
-  2e:	12 c0       	rjmp	.+36     	; 0x54 <__bad_interrupt>
-  30:	11 c0       	rjmp	.+34     	; 0x54 <__bad_interrupt>
-  32:	10 c0       	rjmp	.+32     	; 0x54 <__bad_interrupt>
+   2:	33 c0       	rjmp	.+102    	; 0x6a <__bad_interrupt>
+   4:	32 c0       	rjmp	.+100    	; 0x6a <__bad_interrupt>
+   6:	31 c0       	rjmp	.+98     	; 0x6a <__bad_interrupt>
+   8:	30 c0       	rjmp	.+96     	; 0x6a <__bad_interrupt>
+   a:	2f c0       	rjmp	.+94     	; 0x6a <__bad_interrupt>
+   c:	2e c0       	rjmp	.+92     	; 0x6a <__bad_interrupt>
+   e:	2d c0       	rjmp	.+90     	; 0x6a <__bad_interrupt>
+  10:	2c c0       	rjmp	.+88     	; 0x6a <__bad_interrupt>
+  12:	2b c0       	rjmp	.+86     	; 0x6a <__bad_interrupt>
+  14:	2a c0       	rjmp	.+84     	; 0x6a <__bad_interrupt>
+  16:	6f c0       	rjmp	.+222    	; 0xf6 <__vector_11>
+  18:	28 c0       	rjmp	.+80     	; 0x6a <__bad_interrupt>
+  1a:	27 c0       	rjmp	.+78     	; 0x6a <__bad_interrupt>
+  1c:	26 c0       	rjmp	.+76     	; 0x6a <__bad_interrupt>
+  1e:	25 c0       	rjmp	.+74     	; 0x6a <__bad_interrupt>
+  20:	24 c0       	rjmp	.+72     	; 0x6a <__bad_interrupt>
+  22:	23 c0       	rjmp	.+70     	; 0x6a <__bad_interrupt>
+  24:	22 c0       	rjmp	.+68     	; 0x6a <__bad_interrupt>
+  26:	21 c0       	rjmp	.+66     	; 0x6a <__bad_interrupt>
+  28:	20 c0       	rjmp	.+64     	; 0x6a <__bad_interrupt>
+  2a:	1f c0       	rjmp	.+62     	; 0x6a <__bad_interrupt>
+  2c:	1e c0       	rjmp	.+60     	; 0x6a <__bad_interrupt>
+  2e:	1d c0       	rjmp	.+58     	; 0x6a <__bad_interrupt>
+  30:	1c c0       	rjmp	.+56     	; 0x6a <__bad_interrupt>
+  32:	1b c0       	rjmp	.+54     	; 0x6a <__bad_interrupt>
 
 00000034 <__ctors_end>:
   34:	11 24       	eor	r1, r1
@@ -68,247 +68,366 @@ Disassembly of section .text:
   3c:	de bf       	out	0x3e, r29	; 62
   3e:	cd bf       	out	0x3d, r28	; 61
 
-00000040 <__do_clear_bss>:
-  40:	21 e0       	ldi	r18, 0x01	; 1
+00000040 <__do_copy_data>:
+  40:	11 e0       	ldi	r17, 0x01	; 1
   42:	a0 e0       	ldi	r26, 0x00	; 0
   44:	b1 e0       	ldi	r27, 0x01	; 1
-  46:	01 c0       	rjmp	.+2      	; 0x4a <.do_clear_bss_start>
+  46:	e4 e1       	ldi	r30, 0x14	; 20
+  48:	f2 e0       	ldi	r31, 0x02	; 2
+  4a:	02 c0       	rjmp	.+4      	; 0x50 <__do_copy_data+0x10>
+  4c:	05 90       	lpm	r0, Z+
+  4e:	0d 92       	st	X+, r0
+  50:	a2 30       	cpi	r26, 0x02	; 2
+  52:	b1 07       	cpc	r27, r17
+  54:	d9 f7       	brne	.-10     	; 0x4c <__do_copy_data+0xc>
 
-00000048 <.do_clear_bss_loop>:
-  48:	1d 92       	st	X+, r1
+00000056 <__do_clear_bss>:
+  56:	21 e0       	ldi	r18, 0x01	; 1
+  58:	a2 e0       	ldi	r26, 0x02	; 2
+  5a:	b1 e0       	ldi	r27, 0x01	; 1
+  5c:	01 c0       	rjmp	.+2      	; 0x60 <.do_clear_bss_start>
 
-0000004a <.do_clear_bss_start>:
-  4a:	a7 30       	cpi	r26, 0x07	; 7
-  4c:	b2 07       	cpc	r27, r18
-  4e:	e1 f7       	brne	.-8      	; 0x48 <.do_clear_bss_loop>
-  50:	02 d0       	rcall	.+4      	; 0x56 <main>
-  52:	9a c0       	rjmp	.+308    	; 0x188 <_exit>
+0000005e <.do_clear_bss_loop>:
+  5e:	1d 92       	st	X+, r1
 
-00000054 <__bad_interrupt>:
-  54:	d5 cf       	rjmp	.-86     	; 0x0 <__vectors>
+00000060 <.do_clear_bss_start>:
+  60:	aa 30       	cpi	r26, 0x0A	; 10
+  62:	b2 07       	cpc	r27, r18
+  64:	e1 f7       	brne	.-8      	; 0x5e <.do_clear_bss_loop>
+  66:	02 d0       	rcall	.+4      	; 0x6c <main>
+  68:	d3 c0       	rjmp	.+422    	; 0x210 <_exit>
 
-00000056 <main>:
+0000006a <__bad_interrupt>:
+  6a:	ca cf       	rjmp	.-108    	; 0x0 <__vectors>
+
+0000006c <main>:
 int main(void)
 {
 	
 	
 	// SET UP TIMER INTERRUPTS (FOR POLLING THE LDR)
 	TCCR1B |= (1 << WGM12);                                // Configure timer 1 for CTC mode
-  56:	e1 e8       	ldi	r30, 0x81	; 129
-  58:	f0 e0       	ldi	r31, 0x00	; 0
-  5a:	80 81       	ld	r24, Z
-  5c:	88 60       	ori	r24, 0x08	; 8
-  5e:	80 83       	st	Z, r24
+  6c:	e1 e8       	ldi	r30, 0x81	; 129
+  6e:	f0 e0       	ldi	r31, 0x00	; 0
+  70:	80 81       	ld	r24, Z
+  72:	88 60       	ori	r24, 0x08	; 8
+  74:	80 83       	st	Z, r24
 	TIMSK1 |= (1 << OCIE1A);                               // Enable CTC interrupt
-  60:	af e6       	ldi	r26, 0x6F	; 111
-  62:	b0 e0       	ldi	r27, 0x00	; 0
-  64:	8c 91       	ld	r24, X
-  66:	82 60       	ori	r24, 0x02	; 2
-  68:	8c 93       	st	X, r24
-	
+  76:	af e6       	ldi	r26, 0x6F	; 111
+  78:	b0 e0       	ldi	r27, 0x00	; 0
+  7a:	8c 91       	ld	r24, X
+  7c:	82 60       	ori	r24, 0x02	; 2
+  7e:	8c 93       	st	X, r24
 	
 	// CONFIGURE THE ADC (FOR READING THE LDR)
+	
+		//int ADCval;
 	ADMUX |= 1 << REFS0;                                   // Set AVcc as the reference voltage for the ADC
-  6a:	ac e7       	ldi	r26, 0x7C	; 124
-  6c:	b0 e0       	ldi	r27, 0x00	; 0
-  6e:	8c 91       	ld	r24, X
-  70:	80 64       	ori	r24, 0x40	; 64
-  72:	8c 93       	st	X, r24
+  80:	ac e7       	ldi	r26, 0x7C	; 124
+  82:	b0 e0       	ldi	r27, 0x00	; 0
+  84:	8c 91       	ld	r24, X
+  86:	80 64       	ori	r24, 0x40	; 64
+  88:	8c 93       	st	X, r24
+		ADMUX &= ~(1 << ADLAR);		// Clear for 10 bit resolution
+  8a:	8c 91       	ld	r24, X
+  8c:	8f 7d       	andi	r24, 0xDF	; 223
+  8e:	8c 93       	st	X, r24
 	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);  // Enable a prescaler
-  74:	aa e7       	ldi	r26, 0x7A	; 122
-  76:	b0 e0       	ldi	r27, 0x00	; 0
-  78:	8c 91       	ld	r24, X
-  7a:	87 60       	ori	r24, 0x07	; 7
-  7c:	8c 93       	st	X, r24
+  90:	aa e7       	ldi	r26, 0x7A	; 122
+  92:	b0 e0       	ldi	r27, 0x00	; 0
+  94:	8c 91       	ld	r24, X
+  96:	87 60       	ori	r24, 0x07	; 7
+  98:	8c 93       	st	X, r24
+		ADCSRA |= (1 << ADEN);		// Enable the ADC
+  9a:	8c 91       	ld	r24, X
+  9c:	80 68       	ori	r24, 0x80	; 128
+  9e:	8c 93       	st	X, r24
 	// ADMUX |= 1 << ADLAR;                                   // 8-bit or 10-bit results
 	// ADCSRA = 1 << ADIE                                     // Enable interrupts function in ADC
-	ADCSRA |= 1 << ADEN;                                   // Turn on the ADC feature
-  7e:	8c 91       	ld	r24, X
-  80:	80 68       	ori	r24, 0x80	; 128
-  82:	8c 93       	st	X, r24
-	
+	//ADCSRA |= (1 << ADEN);                                   // Turn on the ADC feature
 	
 	// ENABLE GLOBAL INTERRUPTS
-	sei();                                                 
-  84:	78 94       	sei
-	
-	
+	sei(); 
+  a0:	78 94       	sei
+
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
 	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
-  86:	84 e2       	ldi	r24, 0x24	; 36
-  88:	94 ef       	ldi	r25, 0xF4	; 244
-  8a:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__EEPROM_REGION_LENGTH__+0x7f0089>
-  8e:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__EEPROM_REGION_LENGTH__+0x7f0088>
+  a2:	84 e2       	ldi	r24, 0x24	; 36
+  a4:	94 ef       	ldi	r25, 0xF4	; 244
+  a6:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__EEPROM_REGION_LENGTH__+0x7f0089>
+  aa:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__EEPROM_REGION_LENGTH__+0x7f0088>
 	TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
-  92:	80 81       	ld	r24, Z
-  94:	85 60       	ori	r24, 0x05	; 5
-  96:	80 83       	st	Z, r24
+  ae:	80 81       	ld	r24, Z
+  b0:	85 60       	ori	r24, 0x05	; 5
+  b2:	80 83       	st	Z, r24
+	
+	// set all LEDs as outputs
+	DDRD |= (1 << DDD2) | (1 << DDD1) | (1 << DDD0);
+  b4:	8a b1       	in	r24, 0x0a	; 10
+  b6:	87 60       	ori	r24, 0x07	; 7
+  b8:	8a b9       	out	0x0a, r24	; 10
+	
+	// make LEDs all high to disable them
+	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+  ba:	8b b1       	in	r24, 0x0b	; 11
+  bc:	87 60       	ori	r24, 0x07	; 7
+  be:	8b b9       	out	0x0b, r24	; 11
 	
     /* Replace with your application code */
     while (1) 
     {
     }
-  98:	ff cf       	rjmp	.-2      	; 0x98 <main+0x42>
+  c0:	ff cf       	rjmp	.-2      	; 0xc0 <main+0x54>
 
-0000009a <__vector_11>:
+000000c2 <turnOnLeds>:
 	
 }
 
 
+void turnOnLeds(int color) {
+  c2:	9c 01       	movw	r18, r24
+
+	// make LEDs all high to disable them
+	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+  c4:	9b b1       	in	r25, 0x0b	; 11
+  c6:	97 60       	ori	r25, 0x07	; 7
+  c8:	9b b9       	out	0x0b, r25	; 11
+	
+	
+	// red
+	if (color == 0) {
+  ca:	21 15       	cp	r18, r1
+  cc:	31 05       	cpc	r19, r1
+  ce:	11 f4       	brne	.+4      	; 0xd4 <turnOnLeds+0x12>
+			PORTD &= ~(1 << PD0); //  turn on PD1 (PD1 is grounded)	
+  d0:	58 98       	cbi	0x0b, 0	; 11
+  d2:	08 95       	ret
+			
+	// blue
+	} else if (color == 1) {
+  d4:	21 30       	cpi	r18, 0x01	; 1
+  d6:	31 05       	cpc	r19, r1
+  d8:	11 f4       	brne	.+4      	; 0xde <turnOnLeds+0x1c>
+		PORTD &= ~(1 << PD1); //  turn on PD1 (PD1 is grounded)	
+  da:	59 98       	cbi	0x0b, 1	; 11
+  dc:	08 95       	ret
+		
+	// green
+	} else if (color == 2) {
+  de:	22 30       	cpi	r18, 0x02	; 2
+  e0:	31 05       	cpc	r19, r1
+  e2:	11 f4       	brne	.+4      	; 0xe8 <turnOnLeds+0x26>
+		PORTD &= ~(1 << PD2); //  turn on PD1 (PD1 is grounded)	
+  e4:	5a 98       	cbi	0x0b, 2	; 11
+  e6:	08 95       	ret
+	// white 
+	} else if (color == 3) {
+  e8:	23 30       	cpi	r18, 0x03	; 3
+  ea:	31 05       	cpc	r19, r1
+  ec:	19 f4       	brne	.+6      	; 0xf4 <turnOnLeds+0x32>
+		PORTD &= ~(1 << PD2);
+  ee:	5a 98       	cbi	0x0b, 2	; 11
+		PORTD &= ~(1 << PD1);
+  f0:	59 98       	cbi	0x0b, 1	; 11
+		PORTD &= ~(1 << PD0);
+  f2:	58 98       	cbi	0x0b, 0	; 11
+  f4:	08 95       	ret
+
+000000f6 <__vector_11>:
+		// do nothing
+	}
+	
+}
+
 ISR(TIMER1_COMPA_vect) {
-  9a:	1f 92       	push	r1
-  9c:	0f 92       	push	r0
-  9e:	0f b6       	in	r0, 0x3f	; 63
-  a0:	0f 92       	push	r0
-  a2:	11 24       	eor	r1, r1
-  a4:	2f 93       	push	r18
-  a6:	3f 93       	push	r19
-  a8:	8f 93       	push	r24
-  aa:	9f 93       	push	r25
-  ac:	ef 93       	push	r30
-  ae:	ff 93       	push	r31
+  f6:	1f 92       	push	r1
+  f8:	0f 92       	push	r0
+  fa:	0f b6       	in	r0, 0x3f	; 63
+  fc:	0f 92       	push	r0
+  fe:	11 24       	eor	r1, r1
+ 100:	2f 93       	push	r18
+ 102:	3f 93       	push	r19
+ 104:	4f 93       	push	r20
+ 106:	5f 93       	push	r21
+ 108:	6f 93       	push	r22
+ 10a:	7f 93       	push	r23
+ 10c:	8f 93       	push	r24
+ 10e:	9f 93       	push	r25
+ 110:	af 93       	push	r26
+ 112:	bf 93       	push	r27
+ 114:	ef 93       	push	r30
+ 116:	ff 93       	push	r31
 	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
-  b0:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <ElapsedFourSeconds>
-  b4:	90 91 04 01 	lds	r25, 0x0104	; 0x800104 <ElapsedFourSeconds+0x1>
-  b8:	01 96       	adiw	r24, 0x01	; 1
+ 118:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 11c:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 120:	01 96       	adiw	r24, 0x01	; 1
+	//DDRD |= (1 << DDD0) ; // sets bit DDD0 to 1 within register DDRD (PD0 is now an output)
+	//PORTD &= ~(1 << PORTD0); //  turn off PD0 (PD0 is grounded)
+	//PORTD = PORTD ^ 0x01;	// Toggle the RGB
 	
 	// check if 2 minutes (120 seconds) have elapsed
-	if (ElapsedFourSeconds == 30) {
-  ba:	8e 31       	cpi	r24, 0x1E	; 30
-  bc:	91 05       	cpc	r25, r1
-  be:	29 f0       	breq	.+10     	; 0xca <__vector_11+0x30>
-
+	if (ElapsedFourSeconds == 1) {
+ 122:	81 30       	cpi	r24, 0x01	; 1
+ 124:	91 05       	cpc	r25, r1
+ 126:	29 f0       	breq	.+10     	; 0x132 <__vector_11+0x3c>
+}
 
 ISR(TIMER1_COMPA_vect) {
 	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
-  c0:	90 93 04 01 	sts	0x0104, r25	; 0x800104 <ElapsedFourSeconds+0x1>
-  c4:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <ElapsedFourSeconds>
-  c8:	54 c0       	rjmp	.+168    	; 0x172 <__vector_11+0xd8>
+ 128:	90 93 03 01 	sts	0x0103, r25	; 0x800103 <__data_end+0x1>
+ 12c:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <__data_end>
+ 130:	5e c0       	rjmp	.+188    	; 0x1ee <__vector_11+0xf8>
+	//PORTD = PORTD ^ 0x01;	// Toggle the RGB
 	
 	// check if 2 minutes (120 seconds) have elapsed
-	if (ElapsedFourSeconds == 30) {
+	if (ElapsedFourSeconds == 1) {
 		
 		ElapsedFourSeconds = 0;  // Reset counter variable
-  ca:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <ElapsedFourSeconds+0x1>
-  ce:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <ElapsedFourSeconds>
+ 132:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <__data_end+0x1>
+ 136:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <__data_end>
 		
-		// take a reading of the LDR sensor
+		// Take a reading of the LDR sensor
 		ADCSRA |= 1 << ADSC; // start the first conversion
-  d2:	ea e7       	ldi	r30, 0x7A	; 122
-  d4:	f0 e0       	ldi	r31, 0x00	; 0
-  d6:	80 81       	ld	r24, Z
-  d8:	80 64       	ori	r24, 0x40	; 64
-  da:	80 83       	st	Z, r24
-		
-		// we are synchronously waiting for the conversion to complete
-		while(!(ADCSRA & (1<<ADIF)));
-  dc:	80 81       	ld	r24, Z
-  de:	84 ff       	sbrs	r24, 4
-  e0:	fd cf       	rjmp	.-6      	; 0xdc <__vector_11+0x42>
-		
+ 13a:	ea e7       	ldi	r30, 0x7A	; 122
+ 13c:	f0 e0       	ldi	r31, 0x00	; 0
+ 13e:	80 81       	ld	r24, Z
+ 140:	80 64       	ori	r24, 0x40	; 64
+ 142:	80 83       	st	Z, r24
+
+		//// we are synchronously waiting for the conversion to complete
+		while(ADCSRA & (1<<ADIF));
+ 144:	80 81       	ld	r24, Z
+ 146:	84 fd       	sbrc	r24, 4
+ 148:	fd cf       	rjmp	.-6      	; 0x144 <__vector_11+0x4e>
+		//
 		// compare ADC to set value
 		if (ADC >= 523) {
-  e2:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__EEPROM_REGION_LENGTH__+0x7f0078>
-  e6:	90 91 79 00 	lds	r25, 0x0079	; 0x800079 <__EEPROM_REGION_LENGTH__+0x7f0079>
-  ea:	8b 30       	cpi	r24, 0x0B	; 11
-  ec:	92 40       	sbci	r25, 0x02	; 2
-  ee:	18 f0       	brcs	.+6      	; 0xf6 <__vector_11+0x5c>
+ 14a:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__EEPROM_REGION_LENGTH__+0x7f0078>
+ 14e:	90 91 79 00 	lds	r25, 0x0079	; 0x800079 <__EEPROM_REGION_LENGTH__+0x7f0079>
+ 152:	8b 30       	cpi	r24, 0x0B	; 11
+ 154:	92 40       	sbci	r25, 0x02	; 2
+ 156:	18 f0       	brcs	.+6      	; 0x15e <__vector_11+0x68>
 			light_now = yes;
-  f0:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <light_now>
-  f4:	03 c0       	rjmp	.+6      	; 0xfc <__vector_11+0x62>
+ 158:	10 92 07 01 	sts	0x0107, r1	; 0x800107 <light_now>
+ 15c:	03 c0       	rjmp	.+6      	; 0x164 <__vector_11+0x6e>
 		} else {
 			light_now = no;
-  f6:	81 e0       	ldi	r24, 0x01	; 1
-  f8:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <light_now>
+ 15e:	81 e0       	ldi	r24, 0x01	; 1
+ 160:	80 93 07 01 	sts	0x0107, r24	; 0x800107 <light_now>
 		}
-		
+
 		// figure out number of hits
 		if (light_before == light_now) {
-  fc:	80 91 06 01 	lds	r24, 0x0106	; 0x800106 <light_now>
- 100:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <light_before>
- 104:	98 13       	cpse	r25, r24
- 106:	0e c0       	rjmp	.+28     	; 0x124 <__vector_11+0x8a>
-			if (hits < 5) {
- 108:	20 91 00 01 	lds	r18, 0x0100	; 0x800100 <_edata>
- 10c:	30 91 01 01 	lds	r19, 0x0101	; 0x800101 <_edata+0x1>
- 110:	25 30       	cpi	r18, 0x05	; 5
- 112:	31 05       	cpc	r19, r1
- 114:	58 f4       	brcc	.+22     	; 0x12c <__vector_11+0x92>
+ 164:	80 91 07 01 	lds	r24, 0x0107	; 0x800107 <light_now>
+ 168:	90 91 00 01 	lds	r25, 0x0100	; 0x800100 <__data_start>
+ 16c:	98 13       	cpse	r25, r24
+ 16e:	0e c0       	rjmp	.+28     	; 0x18c <__vector_11+0x96>
+			if (hits < 2) {
+ 170:	20 91 04 01 	lds	r18, 0x0104	; 0x800104 <hits>
+ 174:	30 91 05 01 	lds	r19, 0x0105	; 0x800105 <hits+0x1>
+ 178:	22 30       	cpi	r18, 0x02	; 2
+ 17a:	31 05       	cpc	r19, r1
+ 17c:	58 f4       	brcc	.+22     	; 0x194 <__vector_11+0x9e>
 				hits++;
- 116:	2f 5f       	subi	r18, 0xFF	; 255
- 118:	3f 4f       	sbci	r19, 0xFF	; 255
- 11a:	30 93 01 01 	sts	0x0101, r19	; 0x800101 <_edata+0x1>
- 11e:	20 93 00 01 	sts	0x0100, r18	; 0x800100 <_edata>
- 122:	04 c0       	rjmp	.+8      	; 0x12c <__vector_11+0x92>
+ 17e:	2f 5f       	subi	r18, 0xFF	; 255
+ 180:	3f 4f       	sbci	r19, 0xFF	; 255
+ 182:	30 93 05 01 	sts	0x0105, r19	; 0x800105 <hits+0x1>
+ 186:	20 93 04 01 	sts	0x0104, r18	; 0x800104 <hits>
+ 18a:	04 c0       	rjmp	.+8      	; 0x194 <__vector_11+0x9e>
 			}
 		} else {
+			
 			hits = 0;
- 124:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <_edata+0x1>
- 128:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <_edata>
+ 18c:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <hits+0x1>
+ 190:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <hits>
 		}
 		light_before = light_now;
- 12c:	80 93 05 01 	sts	0x0105, r24	; 0x800105 <light_before>
+ 194:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+		
+					
+					
 		
 		// determine state machine output (what should the blinds do next)
-		if (current_state == dark AND light_now == yes AND hits == 5) {
- 130:	90 91 02 01 	lds	r25, 0x0102	; 0x800102 <current_state>
- 134:	91 30       	cpi	r25, 0x01	; 1
- 136:	59 f4       	brne	.+22     	; 0x14e <__vector_11+0xb4>
- 138:	81 11       	cpse	r24, r1
- 13a:	16 c0       	rjmp	.+44     	; 0x168 <__vector_11+0xce>
- 13c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
- 140:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
- 144:	05 97       	sbiw	r24, 0x05	; 5
- 146:	81 f4       	brne	.+32     	; 0x168 <__vector_11+0xce>
+		if (current_state == dark AND light_now == yes AND hits == 2) {
+ 198:	90 91 06 01 	lds	r25, 0x0106	; 0x800106 <current_state>
+ 19c:	91 30       	cpi	r25, 0x01	; 1
+ 19e:	71 f4       	brne	.+28     	; 0x1bc <__vector_11+0xc6>
+ 1a0:	81 11       	cpse	r24, r1
+ 1a2:	1d c0       	rjmp	.+58     	; 0x1de <__vector_11+0xe8>
+ 1a4:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <hits>
+ 1a8:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <hits+0x1>
+ 1ac:	02 97       	sbiw	r24, 0x02	; 2
+ 1ae:	b9 f4       	brne	.+46     	; 0x1de <__vector_11+0xe8>
 			current_state = light;
- 148:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <current_state>
- 14c:	0d c0       	rjmp	.+26     	; 0x168 <__vector_11+0xce>
-			// openBlinds();
-		} else if (current_state == light AND light_now == no AND hits == 5) {
- 14e:	91 11       	cpse	r25, r1
- 150:	0b c0       	rjmp	.+22     	; 0x168 <__vector_11+0xce>
- 152:	81 30       	cpi	r24, 0x01	; 1
- 154:	49 f4       	brne	.+18     	; 0x168 <__vector_11+0xce>
- 156:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
- 15a:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
- 15e:	05 97       	sbiw	r24, 0x05	; 5
- 160:	19 f4       	brne	.+6      	; 0x168 <__vector_11+0xce>
+ 1b0:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <current_state>
+			turnOnLeds(2);
+ 1b4:	82 e0       	ldi	r24, 0x02	; 2
+ 1b6:	90 e0       	ldi	r25, 0x00	; 0
+ 1b8:	84 df       	rcall	.-248    	; 0xc2 <turnOnLeds>
+ 1ba:	14 c0       	rjmp	.+40     	; 0x1e4 <__vector_11+0xee>
+			// aleskeyfunction(2);
+		} else if (current_state == light AND light_now == no AND hits == 2) {
+ 1bc:	91 11       	cpse	r25, r1
+ 1be:	0f c0       	rjmp	.+30     	; 0x1de <__vector_11+0xe8>
+ 1c0:	81 30       	cpi	r24, 0x01	; 1
+ 1c2:	69 f4       	brne	.+26     	; 0x1de <__vector_11+0xe8>
+ 1c4:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <hits>
+ 1c8:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <hits+0x1>
+ 1cc:	02 97       	sbiw	r24, 0x02	; 2
+ 1ce:	39 f4       	brne	.+14     	; 0x1de <__vector_11+0xe8>
 			current_state = dark;
- 162:	81 e0       	ldi	r24, 0x01	; 1
- 164:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <current_state>
+ 1d0:	81 e0       	ldi	r24, 0x01	; 1
+ 1d2:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <current_state>
+			turnOnLeds(1);
+ 1d6:	81 e0       	ldi	r24, 0x01	; 1
+ 1d8:	90 e0       	ldi	r25, 0x00	; 0
+ 1da:	73 df       	rcall	.-282    	; 0xc2 <turnOnLeds>
+ 1dc:	03 c0       	rjmp	.+6      	; 0x1e4 <__vector_11+0xee>
+			// aleskesyfunction(0);
 		} else {
+			turnOnLeds(3);
+ 1de:	83 e0       	ldi	r24, 0x03	; 3
+ 1e0:	90 e0       	ldi	r25, 0x00	; 0
+ 1e2:	6f df       	rcall	.-290    	; 0xc2 <turnOnLeds>
 			current_state = current_state;
 		}
 		
 		// Clear ADIF by writing one to it
-		ADCSRA|=(1<<ADIF);
- 168:	ea e7       	ldi	r30, 0x7A	; 122
- 16a:	f0 e0       	ldi	r31, 0x00	; 0
- 16c:	80 81       	ld	r24, Z
- 16e:	80 61       	ori	r24, 0x10	; 16
- 170:	80 83       	st	Z, r24
+		// Clearing ADC bit
+		ADCSRA|=(1<<ADIF);		
+ 1e4:	ea e7       	ldi	r30, 0x7A	; 122
+ 1e6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1e8:	80 81       	ld	r24, Z
+ 1ea:	80 61       	ori	r24, 0x10	; 16
+ 1ec:	80 83       	st	Z, r24
 		
 	}
 	
 }
- 172:	ff 91       	pop	r31
- 174:	ef 91       	pop	r30
- 176:	9f 91       	pop	r25
- 178:	8f 91       	pop	r24
- 17a:	3f 91       	pop	r19
- 17c:	2f 91       	pop	r18
- 17e:	0f 90       	pop	r0
- 180:	0f be       	out	0x3f, r0	; 63
- 182:	0f 90       	pop	r0
- 184:	1f 90       	pop	r1
- 186:	18 95       	reti
+ 1ee:	ff 91       	pop	r31
+ 1f0:	ef 91       	pop	r30
+ 1f2:	bf 91       	pop	r27
+ 1f4:	af 91       	pop	r26
+ 1f6:	9f 91       	pop	r25
+ 1f8:	8f 91       	pop	r24
+ 1fa:	7f 91       	pop	r23
+ 1fc:	6f 91       	pop	r22
+ 1fe:	5f 91       	pop	r21
+ 200:	4f 91       	pop	r20
+ 202:	3f 91       	pop	r19
+ 204:	2f 91       	pop	r18
+ 206:	0f 90       	pop	r0
+ 208:	0f be       	out	0x3f, r0	; 63
+ 20a:	0f 90       	pop	r0
+ 20c:	1f 90       	pop	r1
+ 20e:	18 95       	reti
 
-00000188 <_exit>:
- 188:	f8 94       	cli
+00000210 <_exit>:
+ 210:	f8 94       	cli
 
-0000018a <__stop_program>:
- 18a:	ff cf       	rjmp	.-2      	; 0x18a <__stop_program>
+00000212 <__stop_program>:
+ 212:	ff cf       	rjmp	.-2      	; 0x212 <__stop_program>
