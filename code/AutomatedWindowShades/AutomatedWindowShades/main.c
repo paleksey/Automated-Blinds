@@ -291,8 +291,10 @@ ISR(PCINT1_vect) {
 		}
 		
 	// see if IR detected
-	} else if (~PINC & (1 << PC5)) {
+	} else if (~PINC & (1 << PC5) AND programmed == 1) {
 		
+
+
 
 		
 
@@ -308,13 +310,7 @@ ISR(PCINT1_vect) {
 				
 				// if shades are already not at the bottom
 				if (current_height != max_height) {
-					
-
-					
-					//_delay_ms(2000);
-					
-					turnOnLeds(-1, 0);
-					
+										
 					current_height = current_height + 1;
 					
 					// start moving the shades down
@@ -342,18 +338,11 @@ ISR(PCINT1_vect) {
 				// if shades are not already at the top
 				if (current_height != 0) {
 					
-
-					
-					//_delay_ms(2000);
-					
 					current_height = current_height - 1;
-					
-					turnOnLeds(-1, 0);
 					
 					// start moving the shades up
 					servo(up);
 
-					
 					// wait until the shades reach the top			
 					while (current_height > 0 AND programmed == 1) {
 					// while ((~PINC & (1 << PC5)) && current_height > 0) {
@@ -361,7 +350,6 @@ ISR(PCINT1_vect) {
 					}
 					// stop the servo
 					servo(stop);
-					
 					
 					// update the state
 					IR_state = 0;
@@ -372,16 +360,9 @@ ISR(PCINT1_vect) {
 			}
 			
 		}
-		
-		
-		
+				
 		turnOnLeds(-1, 0);
-		
-		
-		
-		
-		
-		
+				
 		
 		// PORTC &=~(1<<PC3); //clear PC3
 		
