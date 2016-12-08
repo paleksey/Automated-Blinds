@@ -19,7 +19,7 @@
 #define OR ||
 
 
-
+unsigned int IR_state = 0;
 
 // VARIABLES FOR AUTOMATED SHADES STATE MACHINE 
 typedef enum {light, dark} outside_conditions;
@@ -74,13 +74,17 @@ int main(void)
 	
 
 	// CONFIGURE THE BUTTONS
-	DDRC &= ~(1 << PC1) | ~(1 << PC2) | ~(1 << PC3)| ~(1 << PC6);  // make the up button an input (clear bit)
-	PORTC |= (1 << PC1) | (1 << PC2) | (1 << PC3) | (1 << PC6);  // make the up button tied high (set bit)
+	DDRC &= ~(1 << PC1) | ~(1 << PC2) | ~(1 << PC3)| ~(1 << PC6) | ~(1 << PC5) | ~(1 << PC4);  // make the up button an input (clear bit)
+	PORTC |= (1 << PC1) | (1 << PC2) | (1 << PC3) | (1 << PC6) | (1 << PC5);  // make the up button tied high (set bit)
+
+	// CONFIGURE MODE SWITCH
+	portbhistory = PINC;
+
 
 	// CONFIGURE THE INTERRUPTS FOR THE BUTTONS
 	PCICR |= (1 << PCIE1);                               // Turn on pin interrupts for PD pins
 	//PCMSK1 |= (1 << PCINT9) | (1 << PCINT11);              // Mask Interrupts for only the pins you need
-	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11) | (1 << PCINT10) | (1 << PCINT13); 
+	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11) | (1 << PCINT10) | (1 << PCINT13) | (1 << PCINT12); 
 
 	// ENABLE GLOBAL INTERRUPTS
 	sei(); 
@@ -88,7 +92,7 @@ int main(void)
 
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
 	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
-	// TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
+	//TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
 
 	
 	// set all LEDs as outputs
@@ -98,9 +102,9 @@ int main(void)
 	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
 	
 	// servo(up);
-	//turnOnLeds(3, 0);
+	turnOnLeds(1, 0);
 	
-	// servo(callibrate);
+	servo(callibrate);
 	
     /* Replace with your application code */
     while (1) 
@@ -165,10 +169,13 @@ void servo(button action)
 
 
 ISR(PCINT1_vect) {
-	
+	// PCICR |= (1 << PCIE1);                               // Turn on pin interrupts for PD pins
 	
 	changedbits = PINC ^ portbhistory;
 	portbhistory = PINC;	
+
+	// PCICR &= ~(1 << PCIE1); 
+	PCMSK1 &= ~(1 << PCINT13);
 
 	
 	// check if programming button is pressed
@@ -183,7 +190,7 @@ ISR(PCINT1_vect) {
 		// force the servo to move down
 		servo(down);
 		
-		turnOnLeds(1, 0);
+		turnOnLeds(2, 0);
 		
 		// start keeping track of servo position
 		while ((~PINC & (1 << PC3)) && current_height >= 0) {
@@ -213,10 +220,10 @@ ISR(PCINT1_vect) {
 			// start moving the window shades up
 			servo(up);
 			
-			turnOnLeds(1, 0);
+			turnOnLeds(3, 0);
 			
 			while ((~PINC & (1 << PC1))) {
-			// while ((~PINC & (1 << PC1)) && current_height > 0) {
+			//while ((~PINC & (1 << PC1)) && current_height > 0) {
 				current_height = current_height - 1;
 			} 
 			
@@ -227,9 +234,11 @@ ISR(PCINT1_vect) {
 			
 		//}
 		
-		// enable interrupts
+		// enable global interrupts
 		sei();
-		
+	
+	
+	// down button
 	} else if (~PINC & (1 << PC2)) {
 		
 		// disable interrupts
@@ -244,7 +253,7 @@ ISR(PCINT1_vect) {
 			turnOnLeds(1, 0);
 			
 			while ((~PINC & (1 << PC2))) {
-			// while ((~PINC & (1 << PC2)) && current_height < max_height) {
+			 //while ((~PINC & (1 << PC2)) && current_height < max_height) {
 				
 				current_height = current_height + 1;
 			} 
@@ -258,16 +267,132 @@ ISR(PCINT1_vect) {
 		sei();
 		
 		turnOnLeds(-1, 0);
+	
+	// mode selection switch
+	} else if (changedbits & (1 << PC4)) {
+		
+		// switch to automatic mode
+		if (PINC & (1 << PC4)) {
+			turnOnLeds(2, 0);
+			
+		// switch to manual mode
+		} else {
+			turnOnLeds(0, 0);
+		}
 		
 	// see if IR detected
-	} else if (changedbits & (1<< PC5)) {
+	} else if (~PINC & (1 << PC5)) {
+		
+		// cli();
+		
+		
+		int x = 5;
+		
+		
+		
+		
+		
+		for (int i = 0; i < 2; i++) {
+			
+			// last button push was up
+			if (IR_state == 0) {
+				
+				// if shades are already not at the bottom
+				if (current_height != max_height) {
+					
+					turnOnLeds(1, 0);
+					
+					//_delay_ms(2000);
+					
+					turnOnLeds(-1, 0);
+					
+					current_height = current_height + 1;
+					
+					// start moving the shades down
+					servo(down);
+					
+					// wait until the shades reach the bottom
+					while (current_height < max_height) {
+					// while ((~PINC & (1 << PC5)) && current_height < max_height) {
+						current_height = current_height + 1;
+					}
+					
+					// stop the servo
+					servo(stop);
+					
+					// update state
+					IR_state = 1;
+					break;
+				} else {
+					IR_state = 1;
+				}
+			}
+			
+			// last button push was down
+			if (IR_state == 1) {
+				// if shades are not already at the top
+				if (current_height != 0) {
+					
+										turnOnLeds(2, 0);
+					
+					//_delay_ms(2000);
+					
+					current_height = current_height - 1;
+					
+					turnOnLeds(-1, 0);
+					
+					// start moving the shades up
+					servo(up);
+
+					
+					// wait until the shades reach the top			
+					while (current_height > 0) {
+					// while ((~PINC & (1 << PC5)) && current_height > 0) {
+						current_height = current_height - 1;
+					}
+					// stop the servo
+					servo(stop);
+					
+					
+					// update the state
+					IR_state = 0;
+					break;
+				} else {
+					IR_state = 0;
+				}
+			}
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// PORTC &=~(1<<PC3); //clear PC3
+		
+		// Disable IR interrupt
+		// PCMSK1 &= ~(1 << PCINT13);
+		
+		//_delay_ms(4000);
 	
-		int x;
-	
-		turnOnLeds(3, 1);
+		//int x;
+		// cli();
+		
+		turnOnLeds(-1, 0);
+		
+		// PCMSK1 |= (1 << PCINT13);
 		
 	}
-		
+	
+	PCMSK1 |= (1 << PCINT13);
+	// PCICR |= (1 << PCIE1); 
+	
 	
 }
 
