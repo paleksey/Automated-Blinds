@@ -5,6 +5,10 @@
  * Author : Group 13
  */ 
 
+#ifndef F_CPU
+#define F_CPU 16000000UL // 10 MHz clock speed
+#endif
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 	#include <stdint.h>
@@ -36,6 +40,15 @@ volatile uint32_t current_height = 0;
 
 
 uint8_t changedbits; // make not global later
+
+typedef enum {stop, up, down, callibrate} button;
+button buton_up = up;
+button buton_stop = stop;
+button buton_down = down;
+button buton_callibrate = callibrate;
+
+void servo(button action);
+void turnOnLeds(int color, int toggle);
 
 
 int main(void)
@@ -82,6 +95,9 @@ int main(void)
 	// make LEDs all high to disable them
 	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
 	
+	// servo(up);
+	//turnOnLeds(3, 0);
+	
     /* Replace with your application code */
     while (1) 
     {
@@ -93,6 +109,49 @@ int main(void)
 
 
 
+
+void servo(button action)
+	{
+
+	    if(action == callibrate)
+	    {
+	        DDRB  |= (1 << DDB1); // set output to PB1
+			  TCCR1A = ((1 << COM1A0) | (1 << COM1A1) | (1 << WGM11)); // Inverting + WGM mode 14 
+			  TCCR1B = ((1 << WGM12) | (1 << WGM13) | (1 << CS11)); // WGM mode 14 (Fast PWM), and 8x prescaler
+			  //(16000000 / 8 / 40000 = 50hz)
+			  ICR1  = 3999;  //set ICR1 to produce 50Hz frequency
+			  OCR1A = 3699;   // 3999 * 0.925 most left
+	    }
+		    
+	    if(action == down)
+	    {
+	       DDRB  |= (1 << DDB1); // set output to PB1
+
+			  TCCR1A = ((1 << COM1A0) | (1 << COM1A1) | (1 << WGM11)); // Inverting + WGM mode 14 
+			  TCCR1B = ((1 << WGM12) | (1 << WGM13) | (1 << CS11)); // WGM mode 14 (Fast PWM), and 8x prescaler
+			  //(16000000 / 8 / 40000 = 50hz)
+			  ICR1  = 3999;  //set ICR1 to produce 50Hz frequency
+			  OCR1A = 3659;   // 3999 * 0.925 most left
+	    }
+	    
+	    if(action == up)
+	    {
+	      DDRB  |= (1 << DDB1); // set output to PB1
+			  TCCR1A = ((1 << COM1A0) | (1 << COM1A1) | (1 << WGM11)); // Inverting + WGM mode 14 
+			  TCCR1B = ((1 << WGM12) | (1 << WGM13) | (1 << CS11)); // WGM mode 14 (Fast PWM), and 8x prescaler
+			  //(16000000 / 8 / 40000 = 50hz)
+			  ICR1  = 3999;  //set ICR1 to produce 50Hz frequency
+			  OCR1A = 3739;   // 3999 * 0.935 most left
+	    }
+
+		if(action == stop)
+		{
+			DDRB &= ~(1 << DDB1);
+			TCCR1A &= (0<<COM1A1) & (0<<COM1A1);
+		}
+			    
+	}
+	
 
 
 ISR(PCINT1_vect) {

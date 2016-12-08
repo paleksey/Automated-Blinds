@@ -21,6 +21,15 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
+ .text.servo    0x00000000       0x94 main.o
+ .data.buton_callibrate
+                0x00000000        0x1 main.o
+ .data.buton_down
+                0x00000000        0x1 main.o
+ .bss.buton_stop
+                0x00000000        0x1 main.o
+ .data.buton_up
+                0x00000000        0x1 main.o
  .bss.current_height
                 0x00000000        0x4 main.o
  .bss.max_height
@@ -428,42 +437,42 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x38
+.debug_aranges  0x00000000       0x40
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x38 main.o
+                0x00000000       0x40 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x91b
+.debug_info     0x00000000      0x962
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
- .debug_info    0x000005f4      0x327 main.o
+ .debug_info    0x000005f4      0x36e main.o
 
-.debug_abbrev   0x00000000      0x6ce
+.debug_abbrev   0x00000000      0x6bc
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
- .debug_abbrev  0x000005a2      0x12c main.o
+ .debug_abbrev  0x000005a2      0x11a main.o
 
-.debug_line     0x00000000      0x3d3
+.debug_line     0x00000000      0x462
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
- .debug_line    0x00000133      0x2a0 main.o
+ .debug_line    0x00000133      0x32f main.o
 
-.debug_frame    0x00000000       0xe4
+.debug_frame    0x00000000       0xf4
  *(.debug_frame)
- .debug_frame   0x00000000       0xe4 main.o
+ .debug_frame   0x00000000       0xf4 main.o
 
-.debug_str      0x00000000      0x440
+.debug_str      0x00000000      0x484
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
- .debug_str     0x00000208      0x238 main.o
-                                0x26c (size before relaxing)
+ .debug_str     0x00000208      0x27c main.o
+                                0x2c5 (size before relaxing)
 
-.debug_loc      0x00000000      0x28e
+.debug_loc      0x00000000      0x2e1
  *(.debug_loc)
- .debug_loc     0x00000000      0x28e main.o
+ .debug_loc     0x00000000      0x2e1 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -483,9 +492,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x28
+.debug_ranges   0x00000000       0x30
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x28 main.o
+ .debug_ranges  0x00000000       0x30 main.o
 
 .debug_macro
  *(.debug_macro)
