@@ -271,6 +271,7 @@ END GROUP
                 0x0000006a                __vector_3
                 0x0000006a                __vector_23
                 0x0000006a                __vector_25
+                0x0000006a                __vector_11
                 0x0000006a                __vector_13
                 0x0000006a                __vector_17
                 0x0000006a                __vector_19
@@ -279,7 +280,6 @@ END GROUP
                 0x0000006a                __vector_9
                 0x0000006a                __vector_2
                 0x0000006a                __vector_21
-                0x0000006a                __vector_15
                 0x0000006a                __vector_8
                 0x0000006a                __vector_14
                 0x0000006a                __vector_10
@@ -290,17 +290,17 @@ END GROUP
  *(.text.*)
  .text.servo    0x0000006c       0x94 main.o
                 0x0000006c                servo
+ .text.main     0x00000100       0x72 main.o
+                0x00000100                main
  .text.turnOnLeds
-                0x00000100       0x86 main.o
-                0x00000100                turnOnLeds
- .text.main     0x00000186       0x88 main.o
-                0x00000186                main
+                0x00000172       0x86 main.o
+                0x00000172                turnOnLeds
  .text.__vector_4
-                0x0000020e      0x4dc main.o
-                0x0000020e                __vector_4
- .text.__vector_11
-                0x000006ea      0x23e main.o
-                0x000006ea                __vector_11
+                0x000001f8      0x4f0 main.o
+                0x000001f8                __vector_4
+ .text.__vector_15
+                0x000006e8      0x240 main.o
+                0x000006e8                __vector_15
                 0x00000928                . = ALIGN (0x2)
  *(.fini9)
  .fini9         0x00000928        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
@@ -453,20 +453,20 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xc88
+.debug_info     0x00000000      0xc66
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
- .debug_info    0x000005f4      0x694 main.o
+ .debug_info    0x000005f4      0x672 main.o
 
 .debug_abbrev   0x00000000      0x71d
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
  .debug_abbrev  0x000005a2      0x17b main.o
 
-.debug_line     0x00000000      0x6d3
+.debug_line     0x00000000      0x6d9
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega88/avr4/crtatmega88.o
- .debug_line    0x00000133      0x5a0 main.o
+ .debug_line    0x00000133      0x5a6 main.o
 
 .debug_frame    0x00000000       0xfc
  *(.debug_frame)

@@ -60,8 +60,8 @@ int main(void)
 	
 	
 	// SET UP TIMER INTERRUPTS (FOR POLLING THE LDR)
-	TCCR1B |= (1 << WGM12);                                // Configure timer 1 for CTC mode
-	TIMSK1 |= (1 << OCIE1A);                               // Enable CTC interrupt
+	TCCR0B |= (1 << WGM01);                                // Configure timer 1 for CTC mode
+	TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 	
 
 	// CONFIGURE THE ADC (FOR READING THE LDR)
@@ -92,8 +92,8 @@ int main(void)
 
 
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
-	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
-	TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
+	OCR0B = 250;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
+	TCCR0A |= ((1 << CS02) | (1 << CS00));                 // Start timer at F_cpu/1024
 
 	
 	// set all LEDs as outputs
@@ -101,11 +101,9 @@ int main(void)
 	
 	// make LEDs all high to disable them
 	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+
 	
 	// servo(up);
-	turnOnLeds(1, 0);
-	
-	servo(callibrate);
 	
     /* Replace with your application code */
     while (1) 
@@ -174,9 +172,13 @@ ISR(PCINT1_vect) {
 	
 	changedbits = PINC ^ portbhistory;
 	portbhistory = PINC;	
+	
+	
 
 	// PCICR &= ~(1 << PCIE1); 
 	PCMSK1 &= ~(1 << PCINT13);
+	TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
+	
 
 	
 	// check if programming button is pressed
@@ -394,6 +396,7 @@ ISR(PCINT1_vect) {
 	}
 	
 	PCMSK1 |= (1 << PCINT13);
+	TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 	// PCICR |= (1 << PCIE1); 
 	
 	
@@ -463,16 +466,13 @@ void turnOnLeds(int color, int toggle) {
 
 
 
-ISR(TIMER1_COMPA_vect) {
+ISR(TIMER0_COMPB_vect) {
 	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
-	//DDRD |= (1 << DDD0) ; // sets bit DDD0 to 1 within register DDRD (PD0 is now an output)
-	//PORTD &= ~(1 << PORTD0); //  turn off PD0 (PD0 is grounded)
-	//PORTD = PORTD ^ 0x01;	// Toggle the RGB
 	
 	// check if 2 minutes (120 seconds) have elapsed
-	if (ElapsedFourSeconds == 2) {
+	if (ElapsedFourSeconds == 20000) {
 		
 		ElapsedFourSeconds = 0;  // Reset counter variable
 		
@@ -501,8 +501,10 @@ ISR(TIMER1_COMPA_vect) {
 		
 		// determine state machine output (what should the blinds do next)
 		if (current_state == dark AND light_now == yes AND hits == 2) {
-			current_state = light;
+			
 			turnOnLeds(2, 0);
+			
+			current_state = light;
 			
 			// start moving the shades up
 			servo(up);
@@ -517,8 +519,10 @@ ISR(TIMER1_COMPA_vect) {
 			servo(stop);
 					
 		} else if (current_state == light AND light_now == no AND hits == 2) {
-			current_state = dark;
+			
 			turnOnLeds(1, 0);
+			
+			current_state = dark;
 
 			// start moving the shades down
 			servo(down);
@@ -532,7 +536,6 @@ ISR(TIMER1_COMPA_vect) {
 			// stop the servo
 			servo(stop);
 					
-
 		} else {
 			turnOnLeds(3, 0);
 			current_state = current_state;
