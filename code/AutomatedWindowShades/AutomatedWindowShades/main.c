@@ -157,56 +157,70 @@ void servo(button action)
 ISR(PCINT1_vect) {
 	
 	
-
 	changedbits = PINC ^ portbhistory;
 	portbhistory = PINC;	
 
 	
 	// check if programming button is pressed
-	if (changedbits & (1<< PC3)) {
+	if (~PINC & (1 << PC3)) {
 		
 		turnOnLeds(3, 1);
 		
-		//// disable interrupts
-		//
-		//// reset variable -> now we are assuming shades are at the top
-		//current_height = 0;
-		//
-		//// force the servo to move down
-		//// servo(down);
-		//
-		//// start keeping track of servo position
-		//while (PC3 == 0) {
-			//current_height = current_height + 1;
-		//}
-		//
-		//// update the max height so now we know where bottom is
-		//max_height = current_height;
-		//
-		//// turn the interrupts back on
-		//sei();
+		// disable interrupts
+		cli();
 		
+		// reset the height, we are assuming shades are at the top
+		current_height = 0;
 		
+		// force the servo to move down
+		// servo(down);
+		
+		// start keeping track of servo position
+		while (~PINC & (1 << PC3)) {
+			turnOnLeds(1, 0);
+			current_height = current_height + 1;
+		}
+		
+		// stop the servo
+		// servo(stop);
+		
+		// update the max height so now we know where bottom is
+		max_height = current_height;
+		
+		turnOnLeds(0, 0);
+		
+		// turn the interrupts back on
+		sei();
 		
 	// check if up button is pressed
-	} else if (changedbits & (1 << PC1)) {
+	} else if (~PINC & (1 << PC1)) {
 		
 		turnOnLeds(0, 1);
 		
-		//// disable interrupts
-		//
-		//// check position of blinds
-		//if (current_height > 0) {
-			////servo(move_up);
-			//while (PC1 == 0 && current_height > 0) {
-				//current_height = current_height - 1;
-			//} 
-			//// servo(stop);
-		//}
-		//
-		///* PCINT0 changed */
-		//// enable interrupts
-		//sei();
+		// disable interrupts
+		cli();
+		
+		// check position of blinds
+		if (current_height > 0) {
+			
+			// start moving the window shades up
+			//servo(move_up);
+			
+			while ((~PINC & (1 << PC1)) && current_height > 0) {
+				turnOnLeds(1, 0);
+				current_height = current_height - 1;
+			} 
+			
+			// stop moving the window shades
+			// servo(stop);
+			
+			turnOnLeds(2, 0);
+			
+		}
+		
+		// enable interrupts
+		sei();
+		
 	} else if (changedbits & (1 << PC2)) {
 		turnOnLeds(2, 1);
 	}
