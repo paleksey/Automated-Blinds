@@ -19,6 +19,8 @@
 #define OR ||
 
 
+
+
 // VARIABLES FOR AUTOMATED SHADES STATE MACHINE 
 typedef enum {light, dark} outside_conditions;
 outside_conditions current_state = light;
@@ -78,7 +80,7 @@ int main(void)
 	// CONFIGURE THE INTERRUPTS FOR THE BUTTONS
 	PCICR |= (1 << PCIE1);                               // Turn on pin interrupts for PD pins
 	//PCMSK1 |= (1 << PCINT9) | (1 << PCINT11);              // Mask Interrupts for only the pins you need
-	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11) | (1 << PCINT10); 
+	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11) | (1 << PCINT10) | (1 << PCINT13); 
 
 	// ENABLE GLOBAL INTERRUPTS
 	sei(); 
@@ -98,6 +100,8 @@ int main(void)
 	// servo(up);
 	//turnOnLeds(3, 0);
 	
+	// servo(callibrate);
+	
     /* Replace with your application code */
     while (1) 
     {
@@ -112,6 +116,12 @@ int main(void)
 
 void servo(button action)
 	{
+		
+		int PERIOD =  ((16000000*8/46.5)-1);
+		int CALIBRATE_TIMER =  (PERIOD / (20 + 1.5) * 20);
+		int UP_TIMER =  (PERIOD / (20 + 1.7) * 20);
+		int DOWN_TIMER =  (PERIOD / (20 + 1.3) * 20);
+		
 
 	    if(action == callibrate)
 	    {
@@ -119,8 +129,8 @@ void servo(button action)
 			  TCCR1A = ((1 << COM1A0) | (1 << COM1A1) | (1 << WGM11)); // Inverting + WGM mode 14 
 			  TCCR1B = ((1 << WGM12) | (1 << WGM13) | (1 << CS11)); // WGM mode 14 (Fast PWM), and 8x prescaler
 			  //(16000000 / 8 / 40000 = 50hz)
-			  ICR1  = 3999;  //set ICR1 to produce 50Hz frequency
-			  OCR1A = 3699;   // 3999 * 0.925 most left
+			  ICR1  = PERIOD;  //set ICR1 to produce 50Hz frequency
+			  OCR1A = CALIBRATE_TIMER;   // 42552 * 0.925 most left
 	    }
 		    
 	    if(action == down)
@@ -130,8 +140,8 @@ void servo(button action)
 			  TCCR1A = ((1 << COM1A0) | (1 << COM1A1) | (1 << WGM11)); // Inverting + WGM mode 14 
 			  TCCR1B = ((1 << WGM12) | (1 << WGM13) | (1 << CS11)); // WGM mode 14 (Fast PWM), and 8x prescaler
 			  //(16000000 / 8 / 40000 = 50hz)
-			  ICR1  = 3999;  //set ICR1 to produce 50Hz frequency
-			  OCR1A = 3659;   // 3999 * 0.925 most left
+			  ICR1  = PERIOD;  //set ICR1 to produce 50Hz frequency
+			  OCR1A = DOWN_TIMER;   // 42552 * 0.925 most left
 	    }
 	    
 	    if(action == up)
@@ -140,8 +150,8 @@ void servo(button action)
 			  TCCR1A = ((1 << COM1A0) | (1 << COM1A1) | (1 << WGM11)); // Inverting + WGM mode 14 
 			  TCCR1B = ((1 << WGM12) | (1 << WGM13) | (1 << CS11)); // WGM mode 14 (Fast PWM), and 8x prescaler
 			  //(16000000 / 8 / 40000 = 50hz)
-			  ICR1  = 3999;  //set ICR1 to produce 50Hz frequency
-			  OCR1A = 3739;   // 3999 * 0.935 most left
+			  ICR1  = PERIOD;  //set ICR1 to produce 50Hz frequency
+			  OCR1A = UP_TIMER;   // 42552 * 0.935 most left
 	    }
 
 		if(action == stop)
@@ -164,8 +174,6 @@ ISR(PCINT1_vect) {
 	// check if programming button is pressed
 	if (~PINC & (1 << PC3)) {
 		
-		turnOnLeds(3, 1);
-		
 		// disable interrupts
 		cli();
 		
@@ -173,21 +181,22 @@ ISR(PCINT1_vect) {
 		current_height = 0;
 		
 		// force the servo to move down
-		// servo(down);
+		servo(down);
+		
+		turnOnLeds(1, 0);
 		
 		// start keeping track of servo position
-		while (~PINC & (1 << PC3)) {
-			turnOnLeds(1, 0);
+		while ((~PINC & (1 << PC3)) && current_height >= 0) {
 			current_height = current_height + 1;
 		}
 		
 		// stop the servo
-		// servo(stop);
+		servo(stop);
 		
 		// update the max height so now we know where bottom is
 		max_height = current_height;
 		
-		turnOnLeds(0, 0);
+		turnOnLeds(-1, 0);
 		
 		// turn the interrupts back on
 		sei();
@@ -195,34 +204,68 @@ ISR(PCINT1_vect) {
 	// check if up button is pressed
 	} else if (~PINC & (1 << PC1)) {
 		
-		turnOnLeds(0, 1);
+		// disable interrupts
+		cli();
+		
+		// check position of blinds
+		//if (current_height > 0) {
+			
+			// start moving the window shades up
+			servo(up);
+			
+			turnOnLeds(1, 0);
+			
+			while ((~PINC & (1 << PC1))) {
+			// while ((~PINC & (1 << PC1)) && current_height > 0) {
+				current_height = current_height - 1;
+			} 
+			
+			// stop moving the window shades
+			servo(stop);
+			
+			turnOnLeds(-1, 0);
+			
+		//}
+		
+		// enable interrupts
+		sei();
+		
+	} else if (~PINC & (1 << PC2)) {
 		
 		// disable interrupts
 		cli();
 		
 		// check position of blinds
-		if (current_height > 0) {
+		//if (current_height < max_height) {
 			
-			// start moving the window shades up
-			//servo(move_up);
+			// start moving the window shades down
+			servo(down);
 			
-			while ((~PINC & (1 << PC1)) && current_height > 0) {
-				turnOnLeds(1, 0);
-				current_height = current_height - 1;
+			turnOnLeds(1, 0);
+			
+			while ((~PINC & (1 << PC2))) {
+			// while ((~PINC & (1 << PC2)) && current_height < max_height) {
+				
+				current_height = current_height + 1;
 			} 
 			
 			// stop moving the window shades
-			// servo(stop);
+			servo(stop);
 			
-			turnOnLeds(2, 0);
-			
-		}
+		//}
 		
 		// enable interrupts
 		sei();
 		
-	} else if (changedbits & (1 << PC2)) {
-		turnOnLeds(2, 1);
+		turnOnLeds(-1, 0);
+		
+	// see if IR detected
+	} else if (changedbits & (1<< PC5)) {
+	
+		int x;
+	
+		turnOnLeds(3, 1);
+		
 	}
 		
 	
@@ -281,7 +324,9 @@ void turnOnLeds(int color, int toggle) {
 			PORTD &= ~(1 << PD1);
 			PORTD &= ~(1 << PD0);
 		}
-	} else {
+	} else if (color == -1) {
+		// turn off LEDs
+		PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
 		// do nothing
 	}
 	
