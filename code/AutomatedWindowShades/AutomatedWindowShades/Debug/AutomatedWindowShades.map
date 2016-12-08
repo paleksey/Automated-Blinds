@@ -11,6 +11,7 @@ Allocating common symbols
 Common symbol       size              file
 
 changedbits         0x1               main.o
+portbhistory        0x1               main.o
 light_now           0x1               main.o
 ADCval              0x2               main.o
 
@@ -331,20 +332,18 @@ END GROUP
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.portbhistory
-                0x00800100        0x1 main.o
-                0x00800100                portbhistory
  .data.light_before
-                0x00800101        0x1 main.o
-                0x00800101                light_before
+                0x00800100        0x1 main.o
+                0x00800100                light_before
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
                 0x00800102                . = ALIGN (0x2)
+ *fill*         0x00800101        0x1 
                 0x00800102                _edata = .
                 0x00800102                PROVIDE (__data_end, .)
 
-.bss            0x00800102       0x13
+.bss            0x00800102       0x14
                 0x00800102                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
@@ -365,19 +364,20 @@ END GROUP
  .bss.IR_state  0x0080010f        0x2 main.o
                 0x0080010f                IR_state
  *(COMMON)
- COMMON         0x00800111        0x4 main.o
+ COMMON         0x00800111        0x5 main.o
                 0x00800111                changedbits
-                0x00800112                light_now
-                0x00800113                ADCval
-                0x00800115                PROVIDE (__bss_end, .)
+                0x00800112                portbhistory
+                0x00800113                light_now
+                0x00800114                ADCval
+                0x00800116                PROVIDE (__bss_end, .)
                 0x0000070a                __data_load_start = LOADADDR (.data)
                 0x0000070c                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800115        0x0
+.noinit         0x00800116        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800115                _end = .
+                0x00800116                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0

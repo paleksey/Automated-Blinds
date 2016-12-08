@@ -7,7 +7,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         0000070a  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000013  00800102  00800102  000007a0  2**0
+  2 .bss          00000014  00800102  00800102  000007a0  2**0
                   ALLOC
   3 .comment      00000030  00000000  00000000  000007a0  2**0
                   CONTENTS, READONLY
@@ -91,7 +91,7 @@ Disassembly of section .text:
   5e:	1d 92       	st	X+, r1
 
 00000060 <.do_clear_bss_start>:
-  60:	a5 31       	cpi	r26, 0x15	; 21
+  60:	a6 31       	cpi	r26, 0x16	; 22
   62:	b2 07       	cpc	r27, r18
   64:	e1 f7       	brne	.-8      	; 0x5e <.do_clear_bss_loop>
   66:	8f d0       	rcall	.+286    	; 0x186 <main>
@@ -379,7 +379,7 @@ int main(void)
 	// CONFIGURE MODE SWITCH
 	portbhistory = PINC;
  1c4:	86 b1       	in	r24, 0x06	; 6
- 1c6:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+ 1c6:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <portbhistory>
 
 
 	// CONFIGURE THE INTERRUPTS FOR THE BUTTONS
@@ -472,12 +472,12 @@ ISR(PCINT1_vect) {
 	
 	changedbits = PINC ^ portbhistory;
  22e:	86 b1       	in	r24, 0x06	; 6
- 230:	90 91 00 01 	lds	r25, 0x0100	; 0x800100 <__data_start>
+ 230:	90 91 12 01 	lds	r25, 0x0112	; 0x800112 <portbhistory>
  234:	89 27       	eor	r24, r25
  236:	80 93 11 01 	sts	0x0111, r24	; 0x800111 <changedbits>
 	portbhistory = PINC;	
  23a:	86 b1       	in	r24, 0x06	; 6
- 23c:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+ 23c:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <portbhistory>
 
 	// PCICR &= ~(1 << PCIE1); 
 	PCMSK1 &= ~(1 << PCINT13);
@@ -1145,18 +1145,18 @@ ISR(TIMER1_COMPA_vect) {
  63e:	92 40       	sbci	r25, 0x02	; 2
  640:	18 f0       	brcs	.+6      	; 0x648 <__vector_11+0x68>
 			light_now = yes;
- 642:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <light_now>
+ 642:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <light_now>
  646:	03 c0       	rjmp	.+6      	; 0x64e <__vector_11+0x6e>
 		} else {
 			light_now = no;
  648:	81 e0       	ldi	r24, 0x01	; 1
- 64a:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <light_now>
+ 64a:	80 93 13 01 	sts	0x0113, r24	; 0x800113 <light_now>
 		}
 
 		// figure out number of hits
 		if (light_before == light_now) {
- 64e:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <light_now>
- 652:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <light_before>
+ 64e:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <light_now>
+ 652:	90 91 00 01 	lds	r25, 0x0100	; 0x800100 <__data_start>
  656:	98 13       	cpse	r25, r24
  658:	0e c0       	rjmp	.+28     	; 0x676 <__vector_11+0x96>
 			if (hits < 2) {
@@ -1178,7 +1178,7 @@ ISR(TIMER1_COMPA_vect) {
  67a:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <hits>
 		}
 		light_before = light_now;
- 67e:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <light_before>
+ 67e:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
 		
 		// determine state machine output (what should the blinds do next)
 		if (current_state == dark AND light_now == yes AND hits == 2) {

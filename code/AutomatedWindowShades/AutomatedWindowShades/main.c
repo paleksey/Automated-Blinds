@@ -35,7 +35,7 @@ unsigned int ElapsedFourSeconds = 0; // New counter variable
 
 int ADCval;
 
-volatile uint8_t portbhistory = 0x7F;     // default is high because the pull-up
+volatile uint8_t portbhistory;     // default is high because the pull-up
 
 volatile uint32_t max_height = 0;
 volatile uint32_t current_height = 0;
@@ -48,6 +48,8 @@ button buton_up = up;
 button buton_stop = stop;
 button buton_down = down;
 button buton_callibrate = callibrate;
+
+
 
 void servo(button action);
 void turnOnLeds(int color, int toggle);
