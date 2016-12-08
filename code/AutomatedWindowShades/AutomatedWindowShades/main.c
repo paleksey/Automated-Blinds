@@ -49,7 +49,7 @@ button buton_stop = stop;
 button buton_down = down;
 button buton_callibrate = callibrate;
 
-
+volatile int programmed = 0;
 
 void servo(button action);
 void turnOnLeds(int color, int toggle);
@@ -85,7 +85,6 @@ int main(void)
 
 	// CONFIGURE THE INTERRUPTS FOR THE BUTTONS
 	PCICR |= (1 << PCIE1);                               // Turn on pin interrupts for PD pins
-	//PCMSK1 |= (1 << PCINT9) | (1 << PCINT11);              // Mask Interrupts for only the pins you need
 	PCMSK1 |= (1 << PCINT9) | (1 << PCINT11) | (1 << PCINT10) | (1 << PCINT13) | (1 << PCINT12); 
 
 	// ENABLE GLOBAL INTERRUPTS
@@ -94,7 +93,7 @@ int main(void)
 
 	// FINISH TIMER INTERRUPTS (FOR LDR POLLING)
 	OCR1A = 62500;                                         // Set CTC compare value to 1 KHz at 1 MHz AVR clock, with prescaler of 1024
-	//TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
+	TCCR1B |= ((1 << CS10) | (1 << CS12));                 // Start timer at F_cpu/1024
 
 	
 	// set all LEDs as outputs
@@ -195,7 +194,7 @@ ISR(PCINT1_vect) {
 		turnOnLeds(2, 0);
 		
 		// start keeping track of servo position
-		while ((~PINC & (1 << PC3)) && current_height >= 0) {
+		while ((~PINC & (1 << PC3)) AND (programmed == 0 OR current_height >= 0)) {
 			current_height = current_height + 1;
 		}
 		
@@ -204,6 +203,9 @@ ISR(PCINT1_vect) {
 		
 		// update the max height so now we know where bottom is
 		max_height = current_height;
+		
+		// we have now programmed the device
+		programmed = 1;
 		
 		turnOnLeds(-1, 0);
 		
@@ -217,15 +219,15 @@ ISR(PCINT1_vect) {
 		cli();
 		
 		// check position of blinds
-		//if (current_height > 0) {
+		if (current_height > 0 OR programmed==0) {
 			
 			// start moving the window shades up
 			servo(up);
 			
 			turnOnLeds(3, 0);
 			
-			while ((~PINC & (1 << PC1))) {
-			//while ((~PINC & (1 << PC1)) && current_height > 0) {
+			//while ((~PINC & (1 << PC1))) {
+			while ((~PINC & (1 << PC1)) AND (programmed == 0 OR current_height > 0)) {
 				current_height = current_height - 1;
 			} 
 			
@@ -234,7 +236,7 @@ ISR(PCINT1_vect) {
 			
 			turnOnLeds(-1, 0);
 			
-		//}
+		}
 		
 		// enable global interrupts
 		sei();
@@ -247,23 +249,22 @@ ISR(PCINT1_vect) {
 		cli();
 		
 		// check position of blinds
-		//if (current_height < max_height) {
+		if (current_height < max_height OR programmed == 0) {
 			
 			// start moving the window shades down
 			servo(down);
 			
 			turnOnLeds(1, 0);
 			
-			while ((~PINC & (1 << PC2))) {
-			 //while ((~PINC & (1 << PC2)) && current_height < max_height) {
-				
+			//while ((~PINC & (1 << PC2))) {
+			 while ((~PINC & (1 << PC2)) AND (programmed == 0 OR current_height < max_height)) {
 				current_height = current_height + 1;
 			} 
 			
 			// stop moving the window shades
 			servo(stop);
 			
-		//}
+		}
 		
 		// enable interrupts
 		sei();
@@ -314,7 +315,7 @@ ISR(PCINT1_vect) {
 					servo(down);
 					
 					// wait until the shades reach the bottom
-					while (current_height < max_height) {
+					while (current_height < max_height AND programmed == 1) {
 					// while ((~PINC & (1 << PC5)) && current_height < max_height) {
 						current_height = current_height + 1;
 					}
@@ -348,7 +349,7 @@ ISR(PCINT1_vect) {
 
 					
 					// wait until the shades reach the top			
-					while (current_height > 0) {
+					while (current_height > 0 AND programmed == 1) {
 					// while ((~PINC & (1 << PC5)) && current_height > 0) {
 						current_height = current_height - 1;
 					}
@@ -471,7 +472,7 @@ ISR(TIMER1_COMPA_vect) {
 	//PORTD = PORTD ^ 0x01;	// Toggle the RGB
 	
 	// check if 2 minutes (120 seconds) have elapsed
-	if (ElapsedFourSeconds == 1) {
+	if (ElapsedFourSeconds == 2) {
 		
 		ElapsedFourSeconds = 0;  // Reset counter variable
 		
@@ -502,11 +503,36 @@ ISR(TIMER1_COMPA_vect) {
 		if (current_state == dark AND light_now == yes AND hits == 2) {
 			current_state = light;
 			turnOnLeds(2, 0);
-			// aleskeyfunction(2);
+			
+			// start moving the shades up
+			servo(up);
+					
+			// wait until the shades reach the top			
+			while (current_height > 0 AND programmed == 1) {
+			// while ((~PINC & (1 << PC5)) && current_height > 0) {
+				current_height = current_height - 1;
+			}
+					
+			// stop the servo
+			servo(stop);
+					
 		} else if (current_state == light AND light_now == no AND hits == 2) {
 			current_state = dark;
 			turnOnLeds(1, 0);
-			// aleskesyfunction(0);
+
+			// start moving the shades down
+			servo(down);
+					
+			// wait until the shades reach the bottom
+			while (current_height < max_height AND programmed == 1) {
+			// while ((~PINC & (1 << PC5)) && current_height < max_height) {
+				current_height = current_height + 1;
+			}
+					
+			// stop the servo
+			servo(stop);
+					
+
 		} else {
 			turnOnLeds(3, 0);
 			current_state = current_state;
@@ -519,6 +545,7 @@ ISR(TIMER1_COMPA_vect) {
 	}
 	
 }
+
 
 //#if DLEVEL > 5
 //#define SIGNAL  1
