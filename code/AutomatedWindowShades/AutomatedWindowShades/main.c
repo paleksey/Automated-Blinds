@@ -61,7 +61,6 @@ int main(void)
 	
 	// SET UP TIMER INTERRUPTS (FOR POLLING THE LDR)
 	TCCR0B |= (1 << WGM01);                                // Configure timer 1 for CTC mode
-	TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 	
 
 	// CONFIGURE THE ADC (FOR READING THE LDR)
@@ -101,6 +100,16 @@ int main(void)
 	
 	// make LEDs all high to disable them
 	PORTD |= (1 << PD2) | (1 << PD1) | (1 << PD0);
+
+	// switch to automatic mode
+	if (PINC & (1 << PC4)) {
+		turnOnLeds(4, 0);
+		TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
+	// switch to manual mode
+	} else {
+		turnOnLeds(0, 0);
+		TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
+	}
 
 	
 	// servo(up);
@@ -278,11 +287,12 @@ ISR(PCINT1_vect) {
 		
 		// switch to automatic mode
 		if (PINC & (1 << PC4)) {
-			turnOnLeds(2, 0);
-			
+			turnOnLeds(4, 0);
+			TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 		// switch to manual mode
 		} else {
 			turnOnLeds(0, 0);
+			TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
 		}
 		
 	// see if IR detected
@@ -395,8 +405,18 @@ ISR(PCINT1_vect) {
 		
 	}
 	
+			// switch to automatic mode
+		if (PINC & (1 << PC4)) {
+			turnOnLeds(4, 0);
+			TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
+		// switch to manual mode
+		} else {
+			turnOnLeds(0, 0);
+			TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
+		}
+	
 	PCMSK1 |= (1 << PCINT13);
-	TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
+
 	// PCICR |= (1 << PCIE1); 
 	
 	
@@ -442,6 +462,7 @@ void turnOnLeds(int color, int toggle) {
 			
 			PORTD &= ~(1 << PD2); //  turn on PD1 (PD1 is grounded)	
 		}
+		
 	// white 
 	} else if (color == 3) {
 		if (toggle) {
@@ -454,6 +475,19 @@ void turnOnLeds(int color, int toggle) {
 			PORTD &= ~(1 << PD2);
 			PORTD &= ~(1 << PD1);
 			PORTD &= ~(1 << PD0);
+		}
+		
+	// turquoise
+	} else if (color == 4) {
+		if (toggle) {
+			PORTD = PORTD ^ 0x06;	// Toggle the RGB
+		}
+		else {
+			// make LEDs all high to disable them
+			PORTD |= (1 << PD2) | (1 << PD1);
+			
+			PORTD &= ~(1 << PD2);
+			PORTD &= ~(1 << PD1);
 		}
 	} else if (color == -1) {
 		// turn off LEDs
