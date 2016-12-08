@@ -107,7 +107,7 @@ int main(void)
 		TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 	// switch to manual mode
 	} else {
-		turnOnLeds(0, 0);
+		turnOnLeds(-1, 0);
 		TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
 	}
 
@@ -202,7 +202,7 @@ ISR(PCINT1_vect) {
 		// force the servo to move down
 		servo(down);
 		
-		turnOnLeds(2, 0);
+		turnOnLeds(0, 0);
 		
 		// start keeping track of servo position
 		while ((~PINC & (1 << PC3)) AND (programmed == 0 OR current_height >= 0)) {
@@ -235,8 +235,6 @@ ISR(PCINT1_vect) {
 			// start moving the window shades up
 			servo(up);
 			
-			turnOnLeds(3, 0);
-			
 			//while ((~PINC & (1 << PC1))) {
 			while ((~PINC & (1 << PC1)) AND (programmed == 0 OR current_height > 0)) {
 				current_height = current_height - 1;
@@ -245,7 +243,6 @@ ISR(PCINT1_vect) {
 			// stop moving the window shades
 			servo(stop);
 			
-			turnOnLeds(-1, 0);
 			
 		}
 		
@@ -265,7 +262,6 @@ ISR(PCINT1_vect) {
 			// start moving the window shades down
 			servo(down);
 			
-			turnOnLeds(1, 0);
 			
 			//while ((~PINC & (1 << PC2))) {
 			 while ((~PINC & (1 << PC2)) AND (programmed == 0 OR current_height < max_height)) {
@@ -280,7 +276,7 @@ ISR(PCINT1_vect) {
 		// enable interrupts
 		sei();
 		
-		turnOnLeds(-1, 0);
+
 	
 	// mode selection switch
 	} else if (changedbits & (1 << PC4)) {
@@ -291,18 +287,16 @@ ISR(PCINT1_vect) {
 			TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 		// switch to manual mode
 		} else {
-			turnOnLeds(0, 0);
 			TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
 		}
 		
 	// see if IR detected
 	} else if (~PINC & (1 << PC5)) {
 		
-		// cli();
+
 		
-		
-		int x = 5;
-		
+
+		turnOnLeds(4, 0);
 		
 		
 		
@@ -315,7 +309,7 @@ ISR(PCINT1_vect) {
 				// if shades are already not at the bottom
 				if (current_height != max_height) {
 					
-					turnOnLeds(1, 0);
+
 					
 					//_delay_ms(2000);
 					
@@ -348,7 +342,7 @@ ISR(PCINT1_vect) {
 				// if shades are not already at the top
 				if (current_height != 0) {
 					
-										turnOnLeds(2, 0);
+
 					
 					//_delay_ms(2000);
 					
@@ -381,7 +375,7 @@ ISR(PCINT1_vect) {
 		
 		
 		
-		
+		turnOnLeds(-1, 0);
 		
 		
 		
@@ -394,12 +388,11 @@ ISR(PCINT1_vect) {
 		// Disable IR interrupt
 		// PCMSK1 &= ~(1 << PCINT13);
 		
-		//_delay_ms(4000);
-	
-		//int x;
+
+
 		// cli();
 		
-		turnOnLeds(-1, 0);
+
 		
 		// PCMSK1 |= (1 << PCINT13);
 		
@@ -411,8 +404,8 @@ ISR(PCINT1_vect) {
 			TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
 		// switch to manual mode
 		} else {
-			turnOnLeds(0, 0);
 			TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
+			turnOnLeds(-1, 0);
 		}
 	
 	PCMSK1 |= (1 << PCINT13);
@@ -535,9 +528,7 @@ ISR(TIMER0_COMPB_vect) {
 		
 		// determine state machine output (what should the blinds do next)
 		if (current_state == dark AND light_now == yes AND hits == 2) {
-			
-			turnOnLeds(2, 0);
-			
+					
 			current_state = light;
 			
 			// start moving the shades up
@@ -554,8 +545,6 @@ ISR(TIMER0_COMPB_vect) {
 					
 		} else if (current_state == light AND light_now == no AND hits == 2) {
 			
-			turnOnLeds(1, 0);
-			
 			current_state = dark;
 
 			// start moving the shades down
@@ -571,7 +560,6 @@ ISR(TIMER0_COMPB_vect) {
 			servo(stop);
 					
 		} else {
-			turnOnLeds(3, 0);
 			current_state = current_state;
 		}
 		

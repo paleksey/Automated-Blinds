@@ -3,31 +3,31 @@ AutomatedWindowShades.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000002  00800100  000009a4  00000a38  2**0
+  0 .data         00000002  00800100  00000948  000009dc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000009a4  00000000  00000000  00000094  2**1
+  1 .text         00000948  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000016  00800102  00800102  00000a3a  2**0
+  2 .bss          00000016  00800102  00800102  000009de  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000a3a  2**0
+  3 .comment      00000030  00000000  00000000  000009de  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000a6c  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000a10  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000040  00000000  00000000  00000aa8  2**0
+  5 .debug_aranges 00000040  00000000  00000000  00000a4c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000cdb  00000000  00000000  00000ae8  2**0
+  6 .debug_info   00000b95  00000000  00000000  00000a8c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000071d  00000000  00000000  000017c3  2**0
+  7 .debug_abbrev 00000710  00000000  00000000  00001621  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000733  00000000  00000000  00001ee0  2**0
+  8 .debug_line   000006fd  00000000  00000000  00001d31  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000fc  00000000  00000000  00002614  2**2
+  9 .debug_frame  000000fc  00000000  00000000  00002430  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004c3  00000000  00000000  00002710  2**0
+ 10 .debug_str    000004c3  00000000  00000000  0000252c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000003a8  00000000  00000000  00002bd3  2**0
+ 11 .debug_loc    000003b4  00000000  00000000  000029ef  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000030  00000000  00000000  00002f7b  2**0
+ 12 .debug_ranges 00000030  00000000  00000000  00002da3  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -48,7 +48,7 @@ Disassembly of section .text:
   18:	28 c0       	rjmp	.+80     	; 0x6a <__bad_interrupt>
   1a:	27 c0       	rjmp	.+78     	; 0x6a <__bad_interrupt>
   1c:	26 c0       	rjmp	.+76     	; 0x6a <__bad_interrupt>
-  1e:	a0 c3       	rjmp	.+1856   	; 0x760 <__vector_15>
+  1e:	82 c3       	rjmp	.+1796   	; 0x724 <__vector_15>
   20:	24 c0       	rjmp	.+72     	; 0x6a <__bad_interrupt>
   22:	23 c0       	rjmp	.+70     	; 0x6a <__bad_interrupt>
   24:	22 c0       	rjmp	.+68     	; 0x6a <__bad_interrupt>
@@ -72,7 +72,7 @@ Disassembly of section .text:
   40:	11 e0       	ldi	r17, 0x01	; 1
   42:	a0 e0       	ldi	r26, 0x00	; 0
   44:	b1 e0       	ldi	r27, 0x01	; 1
-  46:	e4 ea       	ldi	r30, 0xA4	; 164
+  46:	e8 e4       	ldi	r30, 0x48	; 72
   48:	f9 e0       	ldi	r31, 0x09	; 9
   4a:	02 c0       	rjmp	.+4      	; 0x50 <__do_copy_data+0x10>
   4c:	05 90       	lpm	r0, Z+
@@ -95,7 +95,7 @@ Disassembly of section .text:
   62:	b2 07       	cpc	r27, r18
   64:	e1 f7       	brne	.-8      	; 0x5e <.do_clear_bss_loop>
   66:	9f d0       	rcall	.+318    	; 0x1a6 <main>
-  68:	9b c4       	rjmp	.+2358   	; 0x9a0 <_exit>
+  68:	6d c4       	rjmp	.+2266   	; 0x944 <_exit>
 
 0000006a <__bad_interrupt>:
   6a:	ca cf       	rjmp	.-108    	; 0x0 <__vectors>
@@ -464,11 +464,11 @@ int main(void)
  220:	0a c0       	rjmp	.+20     	; 0x236 <main+0x90>
 	// switch to manual mode
 	} else {
-		turnOnLeds(0, 0);
+		turnOnLeds(-1, 0);
  222:	60 e0       	ldi	r22, 0x00	; 0
  224:	70 e0       	ldi	r23, 0x00	; 0
- 226:	80 e0       	ldi	r24, 0x00	; 0
- 228:	90 e0       	ldi	r25, 0x00	; 0
+ 226:	8f ef       	ldi	r24, 0xFF	; 255
+ 228:	9f ef       	ldi	r25, 0xFF	; 255
  22a:	6a df       	rcall	.-300    	; 0x100 <turnOnLeds>
 		TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
  22c:	ee e6       	ldi	r30, 0x6E	; 110
@@ -560,10 +560,10 @@ ISR(PCINT1_vect) {
  29a:	82 e0       	ldi	r24, 0x02	; 2
  29c:	e7 de       	rcall	.-562    	; 0x6c <servo>
 		
-		turnOnLeds(2, 0);
+		turnOnLeds(0, 0);
  29e:	60 e0       	ldi	r22, 0x00	; 0
  2a0:	70 e0       	ldi	r23, 0x00	; 0
- 2a2:	82 e0       	ldi	r24, 0x02	; 2
+ 2a2:	80 e0       	ldi	r24, 0x00	; 0
  2a4:	90 e0       	ldi	r25, 0x00	; 0
  2a6:	2c df       	rcall	.-424    	; 0x100 <turnOnLeds>
 		
@@ -586,7 +586,7 @@ ISR(PCINT1_vect) {
  2d0:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 		servo(down);
 		
-		turnOnLeds(2, 0);
+		turnOnLeds(0, 0);
 		
 		// start keeping track of servo position
 		while ((~PINC & (1 << PC3)) AND (programmed == 0 OR current_height >= 0)) {
@@ -637,12 +637,12 @@ ISR(PCINT1_vect) {
 		// turn the interrupts back on
 		sei();
  330:	78 94       	sei
- 332:	e7 c1       	rjmp	.+974    	; 0x702 <__stack+0x203>
+ 332:	c9 c1       	rjmp	.+914    	; 0x6c6 <__stack+0x1c7>
 		
 	// check if up button is pressed
 	} else if (~PINC & (1 << PC1)) {
  334:	31 99       	sbic	0x06, 1	; 6
- 336:	4d c0       	rjmp	.+154    	; 0x3d2 <__vector_4+0x19a>
+ 336:	43 c0       	rjmp	.+134    	; 0x3be <__vector_4+0x186>
 		
 		// disable interrupts
 		cli();
@@ -661,922 +661,869 @@ ISR(PCINT1_vect) {
  352:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
  356:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
  35a:	89 2b       	or	r24, r25
- 35c:	c1 f5       	brne	.+112    	; 0x3ce <__vector_4+0x196>
+ 35c:	71 f5       	brne	.+92     	; 0x3ba <__vector_4+0x182>
 			
 			// start moving the window shades up
 			servo(up);
  35e:	81 e0       	ldi	r24, 0x01	; 1
  360:	85 de       	rcall	.-758    	; 0x6c <servo>
 			
-			turnOnLeds(3, 0);
- 362:	60 e0       	ldi	r22, 0x00	; 0
- 364:	70 e0       	ldi	r23, 0x00	; 0
- 366:	83 e0       	ldi	r24, 0x03	; 3
- 368:	90 e0       	ldi	r25, 0x00	; 0
- 36a:	ca de       	rcall	.-620    	; 0x100 <turnOnLeds>
-			
 			//while ((~PINC & (1 << PC1))) {
 			while ((~PINC & (1 << PC1)) AND (programmed == 0 OR current_height > 0)) {
- 36c:	31 9b       	sbis	0x06, 1	; 6
- 36e:	16 c0       	rjmp	.+44     	; 0x39c <__vector_4+0x164>
- 370:	27 c0       	rjmp	.+78     	; 0x3c0 <__vector_4+0x188>
+ 362:	31 9b       	sbis	0x06, 1	; 6
+ 364:	16 c0       	rjmp	.+44     	; 0x392 <__vector_4+0x15a>
+ 366:	27 c0       	rjmp	.+78     	; 0x3b6 <__vector_4+0x17e>
 				current_height = current_height - 1;
- 372:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 376:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 37a:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 37e:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 382:	01 97       	sbiw	r24, 0x01	; 1
- 384:	a1 09       	sbc	r26, r1
- 386:	b1 09       	sbc	r27, r1
- 388:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 38c:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 390:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 394:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 368:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 36c:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 370:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 374:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 378:	01 97       	sbiw	r24, 0x01	; 1
+ 37a:	a1 09       	sbc	r26, r1
+ 37c:	b1 09       	sbc	r27, r1
+ 37e:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 382:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 386:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 38a:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+			
+			// start moving the window shades up
 			servo(up);
 			
-			turnOnLeds(3, 0);
-			
 			//while ((~PINC & (1 << PC1))) {
 			while ((~PINC & (1 << PC1)) AND (programmed == 0 OR current_height > 0)) {
- 398:	31 99       	sbic	0x06, 1	; 6
- 39a:	12 c0       	rjmp	.+36     	; 0x3c0 <__vector_4+0x188>
- 39c:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 3a0:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 3a4:	89 2b       	or	r24, r25
- 3a6:	29 f3       	breq	.-54     	; 0x372 <__vector_4+0x13a>
- 3a8:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 3ac:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 3b0:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 3b4:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 3b8:	89 2b       	or	r24, r25
- 3ba:	8a 2b       	or	r24, r26
- 3bc:	8b 2b       	or	r24, r27
- 3be:	c9 f6       	brne	.-78     	; 0x372 <__vector_4+0x13a>
+ 38e:	31 99       	sbic	0x06, 1	; 6
+ 390:	12 c0       	rjmp	.+36     	; 0x3b6 <__vector_4+0x17e>
+ 392:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 396:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 39a:	89 2b       	or	r24, r25
+ 39c:	29 f3       	breq	.-54     	; 0x368 <__vector_4+0x130>
+ 39e:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 3a2:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 3a6:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 3aa:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 3ae:	89 2b       	or	r24, r25
+ 3b0:	8a 2b       	or	r24, r26
+ 3b2:	8b 2b       	or	r24, r27
+ 3b4:	c9 f6       	brne	.-78     	; 0x368 <__vector_4+0x130>
 				current_height = current_height - 1;
 			} 
 			
 			// stop moving the window shades
 			servo(stop);
- 3c0:	80 e0       	ldi	r24, 0x00	; 0
- 3c2:	54 de       	rcall	.-856    	; 0x6c <servo>
+ 3b6:	80 e0       	ldi	r24, 0x00	; 0
+ 3b8:	59 de       	rcall	.-846    	; 0x6c <servo>
 			
-			turnOnLeds(-1, 0);
- 3c4:	60 e0       	ldi	r22, 0x00	; 0
- 3c6:	70 e0       	ldi	r23, 0x00	; 0
- 3c8:	8f ef       	ldi	r24, 0xFF	; 255
- 3ca:	9f ef       	ldi	r25, 0xFF	; 255
- 3cc:	99 de       	rcall	.-718    	; 0x100 <turnOnLeds>
 			
 		}
 		
 		// enable global interrupts
 		sei();
- 3ce:	78 94       	sei
- 3d0:	98 c1       	rjmp	.+816    	; 0x702 <__stack+0x203>
+ 3ba:	78 94       	sei
+ 3bc:	84 c1       	rjmp	.+776    	; 0x6c6 <__stack+0x1c7>
 	
 	
 	// down button
 	} else if (~PINC & (1 << PC2)) {
- 3d2:	32 99       	sbic	0x06, 2	; 6
- 3d4:	5f c0       	rjmp	.+190    	; 0x494 <__LOCK_REGION_LENGTH__+0x94>
+ 3be:	32 99       	sbic	0x06, 2	; 6
+ 3c0:	55 c0       	rjmp	.+170    	; 0x46c <__LOCK_REGION_LENGTH__+0x6c>
 		
 		// disable interrupts
 		cli();
- 3d6:	f8 94       	cli
+ 3c2:	f8 94       	cli
 		
 		// check position of blinds
 		if (current_height < max_height OR programmed == 0) {
- 3d8:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 3dc:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 3e0:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 3e4:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 3e8:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
- 3ec:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
- 3f0:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
- 3f4:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
- 3f8:	48 17       	cp	r20, r24
- 3fa:	59 07       	cpc	r21, r25
- 3fc:	6a 07       	cpc	r22, r26
- 3fe:	7b 07       	cpc	r23, r27
- 400:	30 f0       	brcs	.+12     	; 0x40e <__LOCK_REGION_LENGTH__+0xe>
- 402:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 406:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 40a:	89 2b       	or	r24, r25
- 40c:	e1 f5       	brne	.+120    	; 0x486 <__LOCK_REGION_LENGTH__+0x86>
+ 3c4:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 3c8:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 3cc:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 3d0:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 3d4:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
+ 3d8:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
+ 3dc:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
+ 3e0:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
+ 3e4:	48 17       	cp	r20, r24
+ 3e6:	59 07       	cpc	r21, r25
+ 3e8:	6a 07       	cpc	r22, r26
+ 3ea:	7b 07       	cpc	r23, r27
+ 3ec:	30 f0       	brcs	.+12     	; 0x3fa <__vector_4+0x1c2>
+ 3ee:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 3f2:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 3f6:	89 2b       	or	r24, r25
+ 3f8:	b9 f5       	brne	.+110    	; 0x468 <__LOCK_REGION_LENGTH__+0x68>
 			
 			// start moving the window shades down
 			servo(down);
- 40e:	82 e0       	ldi	r24, 0x02	; 2
- 410:	2d de       	rcall	.-934    	; 0x6c <servo>
+ 3fa:	82 e0       	ldi	r24, 0x02	; 2
+ 3fc:	37 de       	rcall	.-914    	; 0x6c <servo>
 			
-			turnOnLeds(1, 0);
- 412:	60 e0       	ldi	r22, 0x00	; 0
- 414:	70 e0       	ldi	r23, 0x00	; 0
- 416:	81 e0       	ldi	r24, 0x01	; 1
- 418:	90 e0       	ldi	r25, 0x00	; 0
- 41a:	72 de       	rcall	.-796    	; 0x100 <turnOnLeds>
 			
 			//while ((~PINC & (1 << PC2))) {
 			 while ((~PINC & (1 << PC2)) AND (programmed == 0 OR current_height < max_height)) {
- 41c:	32 9b       	sbis	0x06, 2	; 6
- 41e:	16 c0       	rjmp	.+44     	; 0x44c <__LOCK_REGION_LENGTH__+0x4c>
- 420:	30 c0       	rjmp	.+96     	; 0x482 <__LOCK_REGION_LENGTH__+0x82>
+ 3fe:	32 9b       	sbis	0x06, 2	; 6
+ 400:	16 c0       	rjmp	.+44     	; 0x42e <__LOCK_REGION_LENGTH__+0x2e>
+ 402:	30 c0       	rjmp	.+96     	; 0x464 <__LOCK_REGION_LENGTH__+0x64>
 				current_height = current_height + 1;
- 422:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 426:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 42a:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 42e:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 432:	01 96       	adiw	r24, 0x01	; 1
- 434:	a1 1d       	adc	r26, r1
- 436:	b1 1d       	adc	r27, r1
- 438:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 43c:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 440:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 444:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 404:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 408:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 40c:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 410:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 414:	01 96       	adiw	r24, 0x01	; 1
+ 416:	a1 1d       	adc	r26, r1
+ 418:	b1 1d       	adc	r27, r1
+ 41a:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 41e:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 422:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 426:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+			// start moving the window shades down
 			servo(down);
 			
-			turnOnLeds(1, 0);
 			
 			//while ((~PINC & (1 << PC2))) {
 			 while ((~PINC & (1 << PC2)) AND (programmed == 0 OR current_height < max_height)) {
- 448:	32 99       	sbic	0x06, 2	; 6
- 44a:	1b c0       	rjmp	.+54     	; 0x482 <__LOCK_REGION_LENGTH__+0x82>
- 44c:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 450:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 454:	89 2b       	or	r24, r25
- 456:	29 f3       	breq	.-54     	; 0x422 <__LOCK_REGION_LENGTH__+0x22>
- 458:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 45c:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 460:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 464:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 468:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
- 46c:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
- 470:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
- 474:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
- 478:	48 17       	cp	r20, r24
- 47a:	59 07       	cpc	r21, r25
- 47c:	6a 07       	cpc	r22, r26
- 47e:	7b 07       	cpc	r23, r27
- 480:	80 f2       	brcs	.-96     	; 0x422 <__LOCK_REGION_LENGTH__+0x22>
+ 42a:	32 99       	sbic	0x06, 2	; 6
+ 42c:	1b c0       	rjmp	.+54     	; 0x464 <__LOCK_REGION_LENGTH__+0x64>
+ 42e:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 432:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 436:	89 2b       	or	r24, r25
+ 438:	29 f3       	breq	.-54     	; 0x404 <__LOCK_REGION_LENGTH__+0x4>
+ 43a:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 43e:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 442:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 446:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 44a:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
+ 44e:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
+ 452:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
+ 456:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
+ 45a:	48 17       	cp	r20, r24
+ 45c:	59 07       	cpc	r21, r25
+ 45e:	6a 07       	cpc	r22, r26
+ 460:	7b 07       	cpc	r23, r27
+ 462:	80 f2       	brcs	.-96     	; 0x404 <__LOCK_REGION_LENGTH__+0x4>
 				current_height = current_height + 1;
 			} 
 			
 			// stop moving the window shades
 			servo(stop);
- 482:	80 e0       	ldi	r24, 0x00	; 0
- 484:	f3 dd       	rcall	.-1050   	; 0x6c <servo>
+ 464:	80 e0       	ldi	r24, 0x00	; 0
+ 466:	02 de       	rcall	.-1020   	; 0x6c <servo>
 			
 		}
 		
 		// enable interrupts
 		sei();
- 486:	78 94       	sei
+ 468:	78 94       	sei
+ 46a:	2d c1       	rjmp	.+602    	; 0x6c6 <__stack+0x1c7>
 		
-		turnOnLeds(-1, 0);
- 488:	60 e0       	ldi	r22, 0x00	; 0
- 48a:	70 e0       	ldi	r23, 0x00	; 0
- 48c:	8f ef       	ldi	r24, 0xFF	; 255
- 48e:	9f ef       	ldi	r25, 0xFF	; 255
- 490:	37 de       	rcall	.-914    	; 0x100 <turnOnLeds>
- 492:	37 c1       	rjmp	.+622    	; 0x702 <__stack+0x203>
+
 	
 	// mode selection switch
 	} else if (changedbits & (1 << PC4)) {
- 494:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <changedbits>
- 498:	84 ff       	sbrs	r24, 4
- 49a:	18 c0       	rjmp	.+48     	; 0x4cc <__LOCK_REGION_LENGTH__+0xcc>
+ 46c:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <changedbits>
+ 470:	84 ff       	sbrs	r24, 4
+ 472:	13 c0       	rjmp	.+38     	; 0x49a <__LOCK_REGION_LENGTH__+0x9a>
 		
 		// switch to automatic mode
 		if (PINC & (1 << PC4)) {
- 49c:	34 9b       	sbis	0x06, 4	; 6
- 49e:	0b c0       	rjmp	.+22     	; 0x4b6 <__LOCK_REGION_LENGTH__+0xb6>
+ 474:	34 9b       	sbis	0x06, 4	; 6
+ 476:	0b c0       	rjmp	.+22     	; 0x48e <__LOCK_REGION_LENGTH__+0x8e>
 			turnOnLeds(4, 0);
- 4a0:	60 e0       	ldi	r22, 0x00	; 0
- 4a2:	70 e0       	ldi	r23, 0x00	; 0
- 4a4:	84 e0       	ldi	r24, 0x04	; 4
- 4a6:	90 e0       	ldi	r25, 0x00	; 0
- 4a8:	2b de       	rcall	.-938    	; 0x100 <turnOnLeds>
+ 478:	60 e0       	ldi	r22, 0x00	; 0
+ 47a:	70 e0       	ldi	r23, 0x00	; 0
+ 47c:	84 e0       	ldi	r24, 0x04	; 4
+ 47e:	90 e0       	ldi	r25, 0x00	; 0
+ 480:	3f de       	rcall	.-898    	; 0x100 <turnOnLeds>
 			TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
- 4aa:	ee e6       	ldi	r30, 0x6E	; 110
- 4ac:	f0 e0       	ldi	r31, 0x00	; 0
- 4ae:	80 81       	ld	r24, Z
- 4b0:	84 60       	ori	r24, 0x04	; 4
- 4b2:	80 83       	st	Z, r24
- 4b4:	26 c1       	rjmp	.+588    	; 0x702 <__stack+0x203>
+ 482:	ee e6       	ldi	r30, 0x6E	; 110
+ 484:	f0 e0       	ldi	r31, 0x00	; 0
+ 486:	80 81       	ld	r24, Z
+ 488:	84 60       	ori	r24, 0x04	; 4
+ 48a:	80 83       	st	Z, r24
+ 48c:	1c c1       	rjmp	.+568    	; 0x6c6 <__stack+0x1c7>
 		// switch to manual mode
 		} else {
-			turnOnLeds(0, 0);
- 4b6:	60 e0       	ldi	r22, 0x00	; 0
- 4b8:	70 e0       	ldi	r23, 0x00	; 0
- 4ba:	80 e0       	ldi	r24, 0x00	; 0
- 4bc:	90 e0       	ldi	r25, 0x00	; 0
- 4be:	20 de       	rcall	.-960    	; 0x100 <turnOnLeds>
 			TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
- 4c0:	ee e6       	ldi	r30, 0x6E	; 110
- 4c2:	f0 e0       	ldi	r31, 0x00	; 0
- 4c4:	80 81       	ld	r24, Z
- 4c6:	8b 7f       	andi	r24, 0xFB	; 251
- 4c8:	80 83       	st	Z, r24
- 4ca:	1b c1       	rjmp	.+566    	; 0x702 <__stack+0x203>
+ 48e:	ee e6       	ldi	r30, 0x6E	; 110
+ 490:	f0 e0       	ldi	r31, 0x00	; 0
+ 492:	80 81       	ld	r24, Z
+ 494:	8b 7f       	andi	r24, 0xFB	; 251
+ 496:	80 83       	st	Z, r24
+ 498:	16 c1       	rjmp	.+556    	; 0x6c6 <__stack+0x1c7>
 		}
 		
 	// see if IR detected
 	} else if (~PINC & (1 << PC5)) {
- 4cc:	35 99       	sbic	0x06, 5	; 6
- 4ce:	19 c1       	rjmp	.+562    	; 0x702 <__stack+0x203>
- 4d0:	20 91 11 01 	lds	r18, 0x0111	; 0x800111 <IR_state>
- 4d4:	30 91 12 01 	lds	r19, 0x0112	; 0x800112 <IR_state+0x1>
- 4d8:	82 e0       	ldi	r24, 0x02	; 2
- 4da:	90 e0       	ldi	r25, 0x00	; 0
+ 49a:	35 99       	sbic	0x06, 5	; 6
+ 49c:	14 c1       	rjmp	.+552    	; 0x6c6 <__stack+0x1c7>
+		
+
+		
+
+		turnOnLeds(4, 0);
+ 49e:	60 e0       	ldi	r22, 0x00	; 0
+ 4a0:	70 e0       	ldi	r23, 0x00	; 0
+ 4a2:	84 e0       	ldi	r24, 0x04	; 4
+ 4a4:	90 e0       	ldi	r25, 0x00	; 0
+ 4a6:	2c de       	rcall	.-936    	; 0x100 <turnOnLeds>
+ 4a8:	20 91 11 01 	lds	r18, 0x0111	; 0x800111 <IR_state>
+ 4ac:	30 91 12 01 	lds	r19, 0x0112	; 0x800112 <IR_state+0x1>
+ 4b0:	82 e0       	ldi	r24, 0x02	; 2
+ 4b2:	90 e0       	ldi	r25, 0x00	; 0
 					
 					// update the state
 					IR_state = 0;
 					break;
 				} else {
 					IR_state = 0;
- 4dc:	f0 e0       	ldi	r31, 0x00	; 0
- 4de:	e0 e0       	ldi	r30, 0x00	; 0
+ 4b4:	f0 e0       	ldi	r31, 0x00	; 0
+ 4b6:	e0 e0       	ldi	r30, 0x00	; 0
 		
 		
 		for (int i = 0; i < 2; i++) {
 			
 			// last button push was up
 			if (IR_state == 0) {
- 4e0:	21 15       	cp	r18, r1
- 4e2:	31 05       	cpc	r19, r1
- 4e4:	09 f0       	breq	.+2      	; 0x4e8 <__LOCK_REGION_LENGTH__+0xe8>
- 4e6:	8b c0       	rjmp	.+278    	; 0x5fe <__stack+0xff>
+ 4b8:	21 15       	cp	r18, r1
+ 4ba:	31 05       	cpc	r19, r1
+ 4bc:	09 f0       	breq	.+2      	; 0x4c0 <__LOCK_REGION_LENGTH__+0xc0>
+ 4be:	86 c0       	rjmp	.+268    	; 0x5cc <__stack+0xcd>
 				
 				// if shades are already not at the bottom
 				if (current_height != max_height) {
- 4e8:	00 91 04 01 	lds	r16, 0x0104	; 0x800104 <current_height>
- 4ec:	10 91 05 01 	lds	r17, 0x0105	; 0x800105 <current_height+0x1>
- 4f0:	20 91 06 01 	lds	r18, 0x0106	; 0x800106 <current_height+0x2>
- 4f4:	30 91 07 01 	lds	r19, 0x0107	; 0x800107 <current_height+0x3>
- 4f8:	40 91 08 01 	lds	r20, 0x0108	; 0x800108 <max_height>
- 4fc:	50 91 09 01 	lds	r21, 0x0109	; 0x800109 <max_height+0x1>
- 500:	60 91 0a 01 	lds	r22, 0x010A	; 0x80010a <max_height+0x2>
- 504:	70 91 0b 01 	lds	r23, 0x010B	; 0x80010b <max_height+0x3>
- 508:	04 17       	cp	r16, r20
- 50a:	15 07       	cpc	r17, r21
- 50c:	26 07       	cpc	r18, r22
- 50e:	37 07       	cpc	r19, r23
- 510:	09 f4       	brne	.+2      	; 0x514 <__stack+0x15>
- 512:	79 c0       	rjmp	.+242    	; 0x606 <__stack+0x107>
- 514:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <IR_state+0x1>
- 518:	10 92 11 01 	sts	0x0111, r1	; 0x800111 <IR_state>
+ 4c0:	00 91 04 01 	lds	r16, 0x0104	; 0x800104 <current_height>
+ 4c4:	10 91 05 01 	lds	r17, 0x0105	; 0x800105 <current_height+0x1>
+ 4c8:	20 91 06 01 	lds	r18, 0x0106	; 0x800106 <current_height+0x2>
+ 4cc:	30 91 07 01 	lds	r19, 0x0107	; 0x800107 <current_height+0x3>
+ 4d0:	40 91 08 01 	lds	r20, 0x0108	; 0x800108 <max_height>
+ 4d4:	50 91 09 01 	lds	r21, 0x0109	; 0x800109 <max_height+0x1>
+ 4d8:	60 91 0a 01 	lds	r22, 0x010A	; 0x80010a <max_height+0x2>
+ 4dc:	70 91 0b 01 	lds	r23, 0x010B	; 0x80010b <max_height+0x3>
+ 4e0:	04 17       	cp	r16, r20
+ 4e2:	15 07       	cpc	r17, r21
+ 4e4:	26 07       	cpc	r18, r22
+ 4e6:	37 07       	cpc	r19, r23
+ 4e8:	09 f4       	brne	.+2      	; 0x4ec <__LOCK_REGION_LENGTH__+0xec>
+ 4ea:	74 c0       	rjmp	.+232    	; 0x5d4 <__stack+0xd5>
+ 4ec:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <IR_state+0x1>
+ 4f0:	10 92 11 01 	sts	0x0111, r1	; 0x800111 <IR_state>
 					
-					turnOnLeds(1, 0);
- 51c:	60 e0       	ldi	r22, 0x00	; 0
- 51e:	70 e0       	ldi	r23, 0x00	; 0
- 520:	81 e0       	ldi	r24, 0x01	; 1
- 522:	90 e0       	ldi	r25, 0x00	; 0
- 524:	ed dd       	rcall	.-1062   	; 0x100 <turnOnLeds>
+
 					
 					//_delay_ms(2000);
 					
 					turnOnLeds(-1, 0);
- 526:	60 e0       	ldi	r22, 0x00	; 0
- 528:	70 e0       	ldi	r23, 0x00	; 0
- 52a:	8f ef       	ldi	r24, 0xFF	; 255
- 52c:	9f ef       	ldi	r25, 0xFF	; 255
- 52e:	e8 dd       	rcall	.-1072   	; 0x100 <turnOnLeds>
+ 4f4:	60 e0       	ldi	r22, 0x00	; 0
+ 4f6:	70 e0       	ldi	r23, 0x00	; 0
+ 4f8:	8f ef       	ldi	r24, 0xFF	; 255
+ 4fa:	9f ef       	ldi	r25, 0xFF	; 255
+ 4fc:	01 de       	rcall	.-1022   	; 0x100 <turnOnLeds>
 					
 					current_height = current_height + 1;
- 530:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 534:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 538:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 53c:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 540:	01 96       	adiw	r24, 0x01	; 1
- 542:	a1 1d       	adc	r26, r1
- 544:	b1 1d       	adc	r27, r1
- 546:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 54a:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 54e:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 552:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 4fe:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 502:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 506:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 50a:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 50e:	01 96       	adiw	r24, 0x01	; 1
+ 510:	a1 1d       	adc	r26, r1
+ 512:	b1 1d       	adc	r27, r1
+ 514:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 518:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 51c:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 520:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 					
 					// start moving the shades down
 					servo(down);
- 556:	82 e0       	ldi	r24, 0x02	; 2
- 558:	89 dd       	rcall	.-1262   	; 0x6c <servo>
+ 524:	82 e0       	ldi	r24, 0x02	; 2
+ 526:	a2 dd       	rcall	.-1212   	; 0x6c <servo>
 					
 					// wait until the shades reach the bottom
 					while (current_height < max_height AND programmed == 1) {
- 55a:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 55e:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 562:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 566:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 56a:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
- 56e:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
- 572:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
- 576:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
- 57a:	48 17       	cp	r20, r24
- 57c:	59 07       	cpc	r21, r25
- 57e:	6a 07       	cpc	r22, r26
- 580:	7b 07       	cpc	r23, r27
- 582:	a0 f5       	brcc	.+104    	; 0x5ec <__stack+0xed>
- 584:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 588:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 58c:	01 97       	sbiw	r24, 0x01	; 1
- 58e:	71 f5       	brne	.+92     	; 0x5ec <__stack+0xed>
+ 528:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 52c:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 530:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 534:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 538:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
+ 53c:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
+ 540:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
+ 544:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
+ 548:	48 17       	cp	r20, r24
+ 54a:	59 07       	cpc	r21, r25
+ 54c:	6a 07       	cpc	r22, r26
+ 54e:	7b 07       	cpc	r23, r27
+ 550:	a0 f5       	brcc	.+104    	; 0x5ba <__stack+0xbb>
+ 552:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 556:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 55a:	01 97       	sbiw	r24, 0x01	; 1
+ 55c:	71 f5       	brne	.+92     	; 0x5ba <__stack+0xbb>
 					// while ((~PINC & (1 << PC5)) && current_height < max_height) {
 						current_height = current_height + 1;
- 590:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 594:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 598:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 59c:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 5a0:	01 96       	adiw	r24, 0x01	; 1
- 5a2:	a1 1d       	adc	r26, r1
- 5a4:	b1 1d       	adc	r27, r1
- 5a6:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 5aa:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 5ae:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 5b2:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 55e:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 562:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 566:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 56a:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 56e:	01 96       	adiw	r24, 0x01	; 1
+ 570:	a1 1d       	adc	r26, r1
+ 572:	b1 1d       	adc	r27, r1
+ 574:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 578:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 57c:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 580:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 					
 					// start moving the shades down
 					servo(down);
 					
 					// wait until the shades reach the bottom
 					while (current_height < max_height AND programmed == 1) {
- 5b6:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 5ba:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 5be:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 5c2:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 5c6:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
- 5ca:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
- 5ce:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
- 5d2:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
- 5d6:	48 17       	cp	r20, r24
- 5d8:	59 07       	cpc	r21, r25
- 5da:	6a 07       	cpc	r22, r26
- 5dc:	7b 07       	cpc	r23, r27
- 5de:	30 f4       	brcc	.+12     	; 0x5ec <__stack+0xed>
- 5e0:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 5e4:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 5e8:	01 97       	sbiw	r24, 0x01	; 1
- 5ea:	91 f2       	breq	.-92     	; 0x590 <__stack+0x91>
+ 584:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 588:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 58c:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 590:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 594:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
+ 598:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
+ 59c:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
+ 5a0:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
+ 5a4:	48 17       	cp	r20, r24
+ 5a6:	59 07       	cpc	r21, r25
+ 5a8:	6a 07       	cpc	r22, r26
+ 5aa:	7b 07       	cpc	r23, r27
+ 5ac:	30 f4       	brcc	.+12     	; 0x5ba <__stack+0xbb>
+ 5ae:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 5b2:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 5b6:	01 97       	sbiw	r24, 0x01	; 1
+ 5b8:	91 f2       	breq	.-92     	; 0x55e <__stack+0x5f>
 					// while ((~PINC & (1 << PC5)) && current_height < max_height) {
 						current_height = current_height + 1;
 					}
 					
 					// stop the servo
 					servo(stop);
- 5ec:	80 e0       	ldi	r24, 0x00	; 0
- 5ee:	3e dd       	rcall	.-1412   	; 0x6c <servo>
+ 5ba:	80 e0       	ldi	r24, 0x00	; 0
+ 5bc:	57 dd       	rcall	.-1362   	; 0x6c <servo>
 					
 					// update state
 					IR_state = 1;
- 5f0:	81 e0       	ldi	r24, 0x01	; 1
- 5f2:	90 e0       	ldi	r25, 0x00	; 0
- 5f4:	90 93 12 01 	sts	0x0112, r25	; 0x800112 <IR_state+0x1>
- 5f8:	80 93 11 01 	sts	0x0111, r24	; 0x800111 <IR_state>
+ 5be:	81 e0       	ldi	r24, 0x01	; 1
+ 5c0:	90 e0       	ldi	r25, 0x00	; 0
+ 5c2:	90 93 12 01 	sts	0x0112, r25	; 0x800112 <IR_state+0x1>
+ 5c6:	80 93 11 01 	sts	0x0111, r24	; 0x800111 <IR_state>
 					break;
- 5fc:	7d c0       	rjmp	.+250    	; 0x6f8 <__stack+0x1f9>
+ 5ca:	78 c0       	rjmp	.+240    	; 0x6bc <__stack+0x1bd>
 					IR_state = 1;
 				}
 			}
 			
 			// last button push was down
 			if (IR_state == 1) {
- 5fe:	21 30       	cpi	r18, 0x01	; 1
- 600:	31 05       	cpc	r19, r1
- 602:	09 f0       	breq	.+2      	; 0x606 <__stack+0x107>
- 604:	72 c0       	rjmp	.+228    	; 0x6ea <__stack+0x1eb>
+ 5cc:	21 30       	cpi	r18, 0x01	; 1
+ 5ce:	31 05       	cpc	r19, r1
+ 5d0:	09 f0       	breq	.+2      	; 0x5d4 <__stack+0xd5>
+ 5d2:	6d c0       	rjmp	.+218    	; 0x6ae <__stack+0x1af>
 				// if shades are not already at the top
 				if (current_height != 0) {
- 606:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 60a:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 60e:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 612:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 616:	45 2b       	or	r20, r21
- 618:	46 2b       	or	r20, r22
- 61a:	47 2b       	or	r20, r23
- 61c:	09 f4       	brne	.+2      	; 0x620 <__stack+0x121>
- 61e:	63 c0       	rjmp	.+198    	; 0x6e6 <__stack+0x1e7>
- 620:	81 e0       	ldi	r24, 0x01	; 1
- 622:	90 e0       	ldi	r25, 0x00	; 0
- 624:	90 93 12 01 	sts	0x0112, r25	; 0x800112 <IR_state+0x1>
- 628:	80 93 11 01 	sts	0x0111, r24	; 0x800111 <IR_state>
+ 5d4:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 5d8:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 5dc:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 5e0:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 5e4:	45 2b       	or	r20, r21
+ 5e6:	46 2b       	or	r20, r22
+ 5e8:	47 2b       	or	r20, r23
+ 5ea:	09 f4       	brne	.+2      	; 0x5ee <__stack+0xef>
+ 5ec:	5e c0       	rjmp	.+188    	; 0x6aa <__stack+0x1ab>
+ 5ee:	81 e0       	ldi	r24, 0x01	; 1
+ 5f0:	90 e0       	ldi	r25, 0x00	; 0
+ 5f2:	90 93 12 01 	sts	0x0112, r25	; 0x800112 <IR_state+0x1>
+ 5f6:	80 93 11 01 	sts	0x0111, r24	; 0x800111 <IR_state>
 					
-										turnOnLeds(2, 0);
- 62c:	60 e0       	ldi	r22, 0x00	; 0
- 62e:	70 e0       	ldi	r23, 0x00	; 0
- 630:	82 e0       	ldi	r24, 0x02	; 2
- 632:	90 e0       	ldi	r25, 0x00	; 0
- 634:	65 dd       	rcall	.-1334   	; 0x100 <turnOnLeds>
+
 					
 					//_delay_ms(2000);
 					
 					current_height = current_height - 1;
- 636:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 63a:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 63e:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 642:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 646:	01 97       	sbiw	r24, 0x01	; 1
- 648:	a1 09       	sbc	r26, r1
- 64a:	b1 09       	sbc	r27, r1
- 64c:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 650:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 654:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 658:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 5fa:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 5fe:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 602:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 606:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 60a:	01 97       	sbiw	r24, 0x01	; 1
+ 60c:	a1 09       	sbc	r26, r1
+ 60e:	b1 09       	sbc	r27, r1
+ 610:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 614:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 618:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 61c:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 					
 					turnOnLeds(-1, 0);
- 65c:	60 e0       	ldi	r22, 0x00	; 0
- 65e:	70 e0       	ldi	r23, 0x00	; 0
- 660:	8f ef       	ldi	r24, 0xFF	; 255
- 662:	9f ef       	ldi	r25, 0xFF	; 255
- 664:	4d dd       	rcall	.-1382   	; 0x100 <turnOnLeds>
+ 620:	60 e0       	ldi	r22, 0x00	; 0
+ 622:	70 e0       	ldi	r23, 0x00	; 0
+ 624:	8f ef       	ldi	r24, 0xFF	; 255
+ 626:	9f ef       	ldi	r25, 0xFF	; 255
+ 628:	6b dd       	rcall	.-1322   	; 0x100 <turnOnLeds>
 					
 					// start moving the shades up
 					servo(up);
- 666:	81 e0       	ldi	r24, 0x01	; 1
- 668:	01 dd       	rcall	.-1534   	; 0x6c <servo>
+ 62a:	81 e0       	ldi	r24, 0x01	; 1
+ 62c:	1f dd       	rcall	.-1474   	; 0x6c <servo>
 
 					
 					// wait until the shades reach the top			
 					while (current_height > 0 AND programmed == 1) {
- 66a:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 66e:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 672:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 676:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 67a:	89 2b       	or	r24, r25
- 67c:	8a 2b       	or	r24, r26
- 67e:	8b 2b       	or	r24, r27
- 680:	59 f1       	breq	.+86     	; 0x6d8 <__stack+0x1d9>
- 682:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 686:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 68a:	01 97       	sbiw	r24, 0x01	; 1
- 68c:	29 f5       	brne	.+74     	; 0x6d8 <__stack+0x1d9>
+ 62e:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 632:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 636:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 63a:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 63e:	89 2b       	or	r24, r25
+ 640:	8a 2b       	or	r24, r26
+ 642:	8b 2b       	or	r24, r27
+ 644:	59 f1       	breq	.+86     	; 0x69c <__stack+0x19d>
+ 646:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 64a:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 64e:	01 97       	sbiw	r24, 0x01	; 1
+ 650:	29 f5       	brne	.+74     	; 0x69c <__stack+0x19d>
 					// while ((~PINC & (1 << PC5)) && current_height > 0) {
 						current_height = current_height - 1;
- 68e:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 692:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 696:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 69a:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 69e:	01 97       	sbiw	r24, 0x01	; 1
- 6a0:	a1 09       	sbc	r26, r1
- 6a2:	b1 09       	sbc	r27, r1
- 6a4:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 6a8:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 6ac:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 6b0:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 652:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 656:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 65a:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 65e:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 662:	01 97       	sbiw	r24, 0x01	; 1
+ 664:	a1 09       	sbc	r26, r1
+ 666:	b1 09       	sbc	r27, r1
+ 668:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 66c:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 670:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 674:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 					// start moving the shades up
 					servo(up);
 
 					
 					// wait until the shades reach the top			
 					while (current_height > 0 AND programmed == 1) {
- 6b4:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 6b8:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 6bc:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 6c0:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 6c4:	89 2b       	or	r24, r25
- 6c6:	8a 2b       	or	r24, r26
- 6c8:	8b 2b       	or	r24, r27
- 6ca:	31 f0       	breq	.+12     	; 0x6d8 <__stack+0x1d9>
- 6cc:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 6d0:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 6d4:	01 97       	sbiw	r24, 0x01	; 1
- 6d6:	d9 f2       	breq	.-74     	; 0x68e <__stack+0x18f>
+ 678:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 67c:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 680:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 684:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 688:	89 2b       	or	r24, r25
+ 68a:	8a 2b       	or	r24, r26
+ 68c:	8b 2b       	or	r24, r27
+ 68e:	31 f0       	breq	.+12     	; 0x69c <__stack+0x19d>
+ 690:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 694:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 698:	01 97       	sbiw	r24, 0x01	; 1
+ 69a:	d9 f2       	breq	.-74     	; 0x652 <__stack+0x153>
 					// while ((~PINC & (1 << PC5)) && current_height > 0) {
 						current_height = current_height - 1;
 					}
 					// stop the servo
 					servo(stop);
- 6d8:	80 e0       	ldi	r24, 0x00	; 0
- 6da:	c8 dc       	rcall	.-1648   	; 0x6c <servo>
+ 69c:	80 e0       	ldi	r24, 0x00	; 0
+ 69e:	e6 dc       	rcall	.-1588   	; 0x6c <servo>
 					
 					
 					// update the state
 					IR_state = 0;
- 6dc:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <IR_state+0x1>
- 6e0:	10 92 11 01 	sts	0x0111, r1	; 0x800111 <IR_state>
+ 6a0:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <IR_state+0x1>
+ 6a4:	10 92 11 01 	sts	0x0111, r1	; 0x800111 <IR_state>
 					break;
- 6e4:	09 c0       	rjmp	.+18     	; 0x6f8 <__stack+0x1f9>
+ 6a8:	09 c0       	rjmp	.+18     	; 0x6bc <__stack+0x1bd>
 				} else {
 					IR_state = 0;
- 6e6:	2f 2f       	mov	r18, r31
- 6e8:	3e 2f       	mov	r19, r30
- 6ea:	01 97       	sbiw	r24, 0x01	; 1
-		
+ 6aa:	2f 2f       	mov	r18, r31
+ 6ac:	3e 2f       	mov	r19, r30
+ 6ae:	01 97       	sbiw	r24, 0x01	; 1
+		turnOnLeds(4, 0);
 		
 		
 		
 		
 		for (int i = 0; i < 2; i++) {
- 6ec:	09 f0       	breq	.+2      	; 0x6f0 <__stack+0x1f1>
- 6ee:	f8 ce       	rjmp	.-528    	; 0x4e0 <__LOCK_REGION_LENGTH__+0xe0>
- 6f0:	30 93 12 01 	sts	0x0112, r19	; 0x800112 <IR_state+0x1>
- 6f4:	20 93 11 01 	sts	0x0111, r18	; 0x800111 <IR_state>
-		//_delay_ms(4000);
-	
-		//int x;
-		// cli();
+ 6b0:	09 f0       	breq	.+2      	; 0x6b4 <__stack+0x1b5>
+ 6b2:	02 cf       	rjmp	.-508    	; 0x4b8 <__LOCK_REGION_LENGTH__+0xb8>
+ 6b4:	30 93 12 01 	sts	0x0112, r19	; 0x800112 <IR_state+0x1>
+ 6b8:	20 93 11 01 	sts	0x0111, r18	; 0x800111 <IR_state>
+			
+		}
+		
+		
 		
 		turnOnLeds(-1, 0);
- 6f8:	60 e0       	ldi	r22, 0x00	; 0
- 6fa:	70 e0       	ldi	r23, 0x00	; 0
- 6fc:	8f ef       	ldi	r24, 0xFF	; 255
- 6fe:	9f ef       	ldi	r25, 0xFF	; 255
- 700:	ff dc       	rcall	.-1538   	; 0x100 <turnOnLeds>
+ 6bc:	60 e0       	ldi	r22, 0x00	; 0
+ 6be:	70 e0       	ldi	r23, 0x00	; 0
+ 6c0:	8f ef       	ldi	r24, 0xFF	; 255
+ 6c2:	9f ef       	ldi	r25, 0xFF	; 255
+ 6c4:	1d dd       	rcall	.-1478   	; 0x100 <turnOnLeds>
 		// PCMSK1 |= (1 << PCINT13);
 		
 	}
 	
 			// switch to automatic mode
 		if (PINC & (1 << PC4)) {
- 702:	34 9b       	sbis	0x06, 4	; 6
- 704:	0b c0       	rjmp	.+22     	; 0x71c <__stack+0x21d>
+ 6c6:	34 9b       	sbis	0x06, 4	; 6
+ 6c8:	0b c0       	rjmp	.+22     	; 0x6e0 <__stack+0x1e1>
 			turnOnLeds(4, 0);
- 706:	60 e0       	ldi	r22, 0x00	; 0
- 708:	70 e0       	ldi	r23, 0x00	; 0
- 70a:	84 e0       	ldi	r24, 0x04	; 4
- 70c:	90 e0       	ldi	r25, 0x00	; 0
- 70e:	f8 dc       	rcall	.-1552   	; 0x100 <turnOnLeds>
+ 6ca:	60 e0       	ldi	r22, 0x00	; 0
+ 6cc:	70 e0       	ldi	r23, 0x00	; 0
+ 6ce:	84 e0       	ldi	r24, 0x04	; 4
+ 6d0:	90 e0       	ldi	r25, 0x00	; 0
+ 6d2:	16 dd       	rcall	.-1492   	; 0x100 <turnOnLeds>
 			TIMSK0 |= (1 << OCIE0B);                               // Enable CTC interrupt
- 710:	ee e6       	ldi	r30, 0x6E	; 110
- 712:	f0 e0       	ldi	r31, 0x00	; 0
- 714:	80 81       	ld	r24, Z
- 716:	84 60       	ori	r24, 0x04	; 4
- 718:	80 83       	st	Z, r24
- 71a:	0a c0       	rjmp	.+20     	; 0x730 <__stack+0x231>
+ 6d4:	ee e6       	ldi	r30, 0x6E	; 110
+ 6d6:	f0 e0       	ldi	r31, 0x00	; 0
+ 6d8:	80 81       	ld	r24, Z
+ 6da:	84 60       	ori	r24, 0x04	; 4
+ 6dc:	80 83       	st	Z, r24
+ 6de:	0a c0       	rjmp	.+20     	; 0x6f4 <__stack+0x1f5>
 		// switch to manual mode
 		} else {
-			turnOnLeds(0, 0);
- 71c:	60 e0       	ldi	r22, 0x00	; 0
- 71e:	70 e0       	ldi	r23, 0x00	; 0
- 720:	80 e0       	ldi	r24, 0x00	; 0
- 722:	90 e0       	ldi	r25, 0x00	; 0
- 724:	ed dc       	rcall	.-1574   	; 0x100 <turnOnLeds>
 			TIMSK0 &= ~(1 << OCIE0B);                               // Enable CTC interrupt
- 726:	ee e6       	ldi	r30, 0x6E	; 110
- 728:	f0 e0       	ldi	r31, 0x00	; 0
- 72a:	80 81       	ld	r24, Z
- 72c:	8b 7f       	andi	r24, 0xFB	; 251
- 72e:	80 83       	st	Z, r24
+ 6e0:	ee e6       	ldi	r30, 0x6E	; 110
+ 6e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 6e4:	80 81       	ld	r24, Z
+ 6e6:	8b 7f       	andi	r24, 0xFB	; 251
+ 6e8:	80 83       	st	Z, r24
+			turnOnLeds(-1, 0);
+ 6ea:	60 e0       	ldi	r22, 0x00	; 0
+ 6ec:	70 e0       	ldi	r23, 0x00	; 0
+ 6ee:	8f ef       	ldi	r24, 0xFF	; 255
+ 6f0:	9f ef       	ldi	r25, 0xFF	; 255
+ 6f2:	06 dd       	rcall	.-1524   	; 0x100 <turnOnLeds>
 		}
 	
 	PCMSK1 |= (1 << PCINT13);
- 730:	ec e6       	ldi	r30, 0x6C	; 108
- 732:	f0 e0       	ldi	r31, 0x00	; 0
- 734:	80 81       	ld	r24, Z
- 736:	80 62       	ori	r24, 0x20	; 32
- 738:	80 83       	st	Z, r24
+ 6f4:	ec e6       	ldi	r30, 0x6C	; 108
+ 6f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 6f8:	80 81       	ld	r24, Z
+ 6fa:	80 62       	ori	r24, 0x20	; 32
+ 6fc:	80 83       	st	Z, r24
 
 	// PCICR |= (1 << PCIE1); 
 	
 	
 }
- 73a:	ff 91       	pop	r31
- 73c:	ef 91       	pop	r30
- 73e:	bf 91       	pop	r27
- 740:	af 91       	pop	r26
- 742:	9f 91       	pop	r25
- 744:	8f 91       	pop	r24
- 746:	7f 91       	pop	r23
- 748:	6f 91       	pop	r22
- 74a:	5f 91       	pop	r21
- 74c:	4f 91       	pop	r20
- 74e:	3f 91       	pop	r19
- 750:	2f 91       	pop	r18
- 752:	1f 91       	pop	r17
- 754:	0f 91       	pop	r16
- 756:	0f 90       	pop	r0
- 758:	0f be       	out	0x3f, r0	; 63
- 75a:	0f 90       	pop	r0
- 75c:	1f 90       	pop	r1
- 75e:	18 95       	reti
+ 6fe:	ff 91       	pop	r31
+ 700:	ef 91       	pop	r30
+ 702:	bf 91       	pop	r27
+ 704:	af 91       	pop	r26
+ 706:	9f 91       	pop	r25
+ 708:	8f 91       	pop	r24
+ 70a:	7f 91       	pop	r23
+ 70c:	6f 91       	pop	r22
+ 70e:	5f 91       	pop	r21
+ 710:	4f 91       	pop	r20
+ 712:	3f 91       	pop	r19
+ 714:	2f 91       	pop	r18
+ 716:	1f 91       	pop	r17
+ 718:	0f 91       	pop	r16
+ 71a:	0f 90       	pop	r0
+ 71c:	0f be       	out	0x3f, r0	; 63
+ 71e:	0f 90       	pop	r0
+ 720:	1f 90       	pop	r1
+ 722:	18 95       	reti
 
-00000760 <__vector_15>:
+00000724 <__vector_15>:
 }
 
 
 
 
 ISR(TIMER0_COMPB_vect) {
- 760:	1f 92       	push	r1
- 762:	0f 92       	push	r0
- 764:	0f b6       	in	r0, 0x3f	; 63
- 766:	0f 92       	push	r0
- 768:	11 24       	eor	r1, r1
- 76a:	2f 93       	push	r18
- 76c:	3f 93       	push	r19
- 76e:	4f 93       	push	r20
- 770:	5f 93       	push	r21
- 772:	6f 93       	push	r22
- 774:	7f 93       	push	r23
- 776:	8f 93       	push	r24
- 778:	9f 93       	push	r25
- 77a:	af 93       	push	r26
- 77c:	bf 93       	push	r27
- 77e:	ef 93       	push	r30
- 780:	ff 93       	push	r31
+ 724:	1f 92       	push	r1
+ 726:	0f 92       	push	r0
+ 728:	0f b6       	in	r0, 0x3f	; 63
+ 72a:	0f 92       	push	r0
+ 72c:	11 24       	eor	r1, r1
+ 72e:	2f 93       	push	r18
+ 730:	3f 93       	push	r19
+ 732:	4f 93       	push	r20
+ 734:	5f 93       	push	r21
+ 736:	6f 93       	push	r22
+ 738:	7f 93       	push	r23
+ 73a:	8f 93       	push	r24
+ 73c:	9f 93       	push	r25
+ 73e:	af 93       	push	r26
+ 740:	bf 93       	push	r27
+ 742:	ef 93       	push	r30
+ 744:	ff 93       	push	r31
 	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
- 782:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <ElapsedFourSeconds>
- 786:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <ElapsedFourSeconds+0x1>
- 78a:	01 96       	adiw	r24, 0x01	; 1
+ 746:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <ElapsedFourSeconds>
+ 74a:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <ElapsedFourSeconds+0x1>
+ 74e:	01 96       	adiw	r24, 0x01	; 1
 	
 	// check if 2 minutes (120 seconds) have elapsed
 	if (ElapsedFourSeconds == 20000) {
- 78c:	80 32       	cpi	r24, 0x20	; 32
- 78e:	2e e4       	ldi	r18, 0x4E	; 78
- 790:	92 07       	cpc	r25, r18
- 792:	29 f0       	breq	.+10     	; 0x79e <__vector_15+0x3e>
+ 750:	80 32       	cpi	r24, 0x20	; 32
+ 752:	2e e4       	ldi	r18, 0x4E	; 78
+ 754:	92 07       	cpc	r25, r18
+ 756:	29 f0       	breq	.+10     	; 0x762 <__vector_15+0x3e>
 
 
 ISR(TIMER0_COMPB_vect) {
 	
 	// Keeps track of four seconds passing
 	ElapsedFourSeconds++;
- 794:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <ElapsedFourSeconds+0x1>
- 798:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <ElapsedFourSeconds>
- 79c:	f0 c0       	rjmp	.+480    	; 0x97e <__vector_15+0x21e>
+ 758:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <ElapsedFourSeconds+0x1>
+ 75c:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <ElapsedFourSeconds>
+ 760:	e0 c0       	rjmp	.+448    	; 0x922 <__vector_15+0x1fe>
 	
 	// check if 2 minutes (120 seconds) have elapsed
 	if (ElapsedFourSeconds == 20000) {
 		
 		ElapsedFourSeconds = 0;  // Reset counter variable
- 79e:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <ElapsedFourSeconds+0x1>
- 7a2:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <ElapsedFourSeconds>
+ 762:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <ElapsedFourSeconds+0x1>
+ 766:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <ElapsedFourSeconds>
 		
 		// Take a reading of the LDR sensor
 		ADCSRA |= 1 << ADSC; // start the first conversion
- 7a6:	ea e7       	ldi	r30, 0x7A	; 122
- 7a8:	f0 e0       	ldi	r31, 0x00	; 0
- 7aa:	80 81       	ld	r24, Z
- 7ac:	80 64       	ori	r24, 0x40	; 64
- 7ae:	80 83       	st	Z, r24
+ 76a:	ea e7       	ldi	r30, 0x7A	; 122
+ 76c:	f0 e0       	ldi	r31, 0x00	; 0
+ 76e:	80 81       	ld	r24, Z
+ 770:	80 64       	ori	r24, 0x40	; 64
+ 772:	80 83       	st	Z, r24
 
 		//// we are synchronously waiting for the conversion to complete
 		while(ADCSRA & (1<<ADIF));
- 7b0:	80 81       	ld	r24, Z
- 7b2:	84 fd       	sbrc	r24, 4
- 7b4:	fd cf       	rjmp	.-6      	; 0x7b0 <__vector_15+0x50>
+ 774:	80 81       	ld	r24, Z
+ 776:	84 fd       	sbrc	r24, 4
+ 778:	fd cf       	rjmp	.-6      	; 0x774 <__vector_15+0x50>
 		//
 		// compare ADC to set value
 		if (ADC >= 523) {
- 7b6:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__EEPROM_REGION_LENGTH__+0x7f0078>
- 7ba:	90 91 79 00 	lds	r25, 0x0079	; 0x800079 <__EEPROM_REGION_LENGTH__+0x7f0079>
- 7be:	8b 30       	cpi	r24, 0x0B	; 11
- 7c0:	92 40       	sbci	r25, 0x02	; 2
- 7c2:	18 f0       	brcs	.+6      	; 0x7ca <__vector_15+0x6a>
+ 77a:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__EEPROM_REGION_LENGTH__+0x7f0078>
+ 77e:	90 91 79 00 	lds	r25, 0x0079	; 0x800079 <__EEPROM_REGION_LENGTH__+0x7f0079>
+ 782:	8b 30       	cpi	r24, 0x0B	; 11
+ 784:	92 40       	sbci	r25, 0x02	; 2
+ 786:	18 f0       	brcs	.+6      	; 0x78e <__vector_15+0x6a>
 			light_now = yes;
- 7c4:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <light_now>
- 7c8:	03 c0       	rjmp	.+6      	; 0x7d0 <__vector_15+0x70>
+ 788:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <light_now>
+ 78c:	03 c0       	rjmp	.+6      	; 0x794 <__vector_15+0x70>
 		} else {
 			light_now = no;
- 7ca:	81 e0       	ldi	r24, 0x01	; 1
- 7cc:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <light_now>
+ 78e:	81 e0       	ldi	r24, 0x01	; 1
+ 790:	80 93 15 01 	sts	0x0115, r24	; 0x800115 <light_now>
 		}
 
 		// figure out number of hits
 		if (light_before == light_now) {
- 7d0:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <light_now>
- 7d4:	90 91 00 01 	lds	r25, 0x0100	; 0x800100 <__data_start>
- 7d8:	98 13       	cpse	r25, r24
- 7da:	0e c0       	rjmp	.+28     	; 0x7f8 <__vector_15+0x98>
+ 794:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <light_now>
+ 798:	90 91 00 01 	lds	r25, 0x0100	; 0x800100 <__data_start>
+ 79c:	98 13       	cpse	r25, r24
+ 79e:	0e c0       	rjmp	.+28     	; 0x7bc <__vector_15+0x98>
 			if (hits < 2) {
- 7dc:	20 91 0e 01 	lds	r18, 0x010E	; 0x80010e <hits>
- 7e0:	30 91 0f 01 	lds	r19, 0x010F	; 0x80010f <hits+0x1>
- 7e4:	22 30       	cpi	r18, 0x02	; 2
- 7e6:	31 05       	cpc	r19, r1
- 7e8:	58 f4       	brcc	.+22     	; 0x800 <__vector_15+0xa0>
+ 7a0:	20 91 0e 01 	lds	r18, 0x010E	; 0x80010e <hits>
+ 7a4:	30 91 0f 01 	lds	r19, 0x010F	; 0x80010f <hits+0x1>
+ 7a8:	22 30       	cpi	r18, 0x02	; 2
+ 7aa:	31 05       	cpc	r19, r1
+ 7ac:	58 f4       	brcc	.+22     	; 0x7c4 <__vector_15+0xa0>
 				hits++;
- 7ea:	2f 5f       	subi	r18, 0xFF	; 255
- 7ec:	3f 4f       	sbci	r19, 0xFF	; 255
- 7ee:	30 93 0f 01 	sts	0x010F, r19	; 0x80010f <hits+0x1>
- 7f2:	20 93 0e 01 	sts	0x010E, r18	; 0x80010e <hits>
- 7f6:	04 c0       	rjmp	.+8      	; 0x800 <__vector_15+0xa0>
+ 7ae:	2f 5f       	subi	r18, 0xFF	; 255
+ 7b0:	3f 4f       	sbci	r19, 0xFF	; 255
+ 7b2:	30 93 0f 01 	sts	0x010F, r19	; 0x80010f <hits+0x1>
+ 7b6:	20 93 0e 01 	sts	0x010E, r18	; 0x80010e <hits>
+ 7ba:	04 c0       	rjmp	.+8      	; 0x7c4 <__vector_15+0xa0>
 			}
 		} else {
 			hits = 0;
- 7f8:	10 92 0f 01 	sts	0x010F, r1	; 0x80010f <hits+0x1>
- 7fc:	10 92 0e 01 	sts	0x010E, r1	; 0x80010e <hits>
+ 7bc:	10 92 0f 01 	sts	0x010F, r1	; 0x80010f <hits+0x1>
+ 7c0:	10 92 0e 01 	sts	0x010E, r1	; 0x80010e <hits>
 		}
 		light_before = light_now;
- 800:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
+ 7c4:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
 		
 		// determine state machine output (what should the blinds do next)
 		if (current_state == dark AND light_now == yes AND hits == 2) {
- 804:	90 91 10 01 	lds	r25, 0x0110	; 0x800110 <current_state>
- 808:	91 30       	cpi	r25, 0x01	; 1
- 80a:	09 f0       	breq	.+2      	; 0x80e <__vector_15+0xae>
- 80c:	4c c0       	rjmp	.+152    	; 0x8a6 <__vector_15+0x146>
- 80e:	81 11       	cpse	r24, r1
- 810:	ac c0       	rjmp	.+344    	; 0x96a <__vector_15+0x20a>
- 812:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <hits>
- 816:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <hits+0x1>
- 81a:	02 97       	sbiw	r24, 0x02	; 2
- 81c:	09 f0       	breq	.+2      	; 0x820 <__vector_15+0xc0>
- 81e:	a5 c0       	rjmp	.+330    	; 0x96a <__vector_15+0x20a>
-			
-			turnOnLeds(2, 0);
- 820:	60 e0       	ldi	r22, 0x00	; 0
- 822:	70 e0       	ldi	r23, 0x00	; 0
- 824:	82 e0       	ldi	r24, 0x02	; 2
- 826:	90 e0       	ldi	r25, 0x00	; 0
- 828:	6b dc       	rcall	.-1834   	; 0x100 <turnOnLeds>
-			
+ 7c8:	90 91 10 01 	lds	r25, 0x0110	; 0x800110 <current_state>
+ 7cc:	91 30       	cpi	r25, 0x01	; 1
+ 7ce:	09 f0       	breq	.+2      	; 0x7d2 <__vector_15+0xae>
+ 7d0:	47 c0       	rjmp	.+142    	; 0x860 <__vector_15+0x13c>
+ 7d2:	81 11       	cpse	r24, r1
+ 7d4:	a1 c0       	rjmp	.+322    	; 0x918 <__vector_15+0x1f4>
+ 7d6:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <hits>
+ 7da:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <hits+0x1>
+ 7de:	02 97       	sbiw	r24, 0x02	; 2
+ 7e0:	09 f0       	breq	.+2      	; 0x7e4 <__vector_15+0xc0>
+ 7e2:	9a c0       	rjmp	.+308    	; 0x918 <__vector_15+0x1f4>
+					
 			current_state = light;
- 82a:	10 92 10 01 	sts	0x0110, r1	; 0x800110 <current_state>
+ 7e4:	10 92 10 01 	sts	0x0110, r1	; 0x800110 <current_state>
 			
 			// start moving the shades up
 			servo(up);
- 82e:	81 e0       	ldi	r24, 0x01	; 1
- 830:	1d dc       	rcall	.-1990   	; 0x6c <servo>
+ 7e8:	81 e0       	ldi	r24, 0x01	; 1
+ 7ea:	40 dc       	rcall	.-1920   	; 0x6c <servo>
 					
 			// wait until the shades reach the top			
 			while (current_height > 0 AND programmed == 1) {
- 832:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 836:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 83a:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 83e:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 842:	89 2b       	or	r24, r25
- 844:	8a 2b       	or	r24, r26
- 846:	8b 2b       	or	r24, r27
- 848:	59 f1       	breq	.+86     	; 0x8a0 <__vector_15+0x140>
- 84a:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 84e:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 852:	01 97       	sbiw	r24, 0x01	; 1
- 854:	29 f5       	brne	.+74     	; 0x8a0 <__vector_15+0x140>
+ 7ec:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 7f0:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 7f4:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 7f8:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 7fc:	89 2b       	or	r24, r25
+ 7fe:	8a 2b       	or	r24, r26
+ 800:	8b 2b       	or	r24, r27
+ 802:	59 f1       	breq	.+86     	; 0x85a <__vector_15+0x136>
+ 804:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 808:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 80c:	01 97       	sbiw	r24, 0x01	; 1
+ 80e:	29 f5       	brne	.+74     	; 0x85a <__vector_15+0x136>
 			// while ((~PINC & (1 << PC5)) && current_height > 0) {
 				current_height = current_height - 1;
- 856:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 85a:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 85e:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 862:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 866:	01 97       	sbiw	r24, 0x01	; 1
- 868:	a1 09       	sbc	r26, r1
- 86a:	b1 09       	sbc	r27, r1
- 86c:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 870:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 874:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 878:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 810:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 814:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 818:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 81c:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 820:	01 97       	sbiw	r24, 0x01	; 1
+ 822:	a1 09       	sbc	r26, r1
+ 824:	b1 09       	sbc	r27, r1
+ 826:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 82a:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 82e:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 832:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 			
 			// start moving the shades up
 			servo(up);
 					
 			// wait until the shades reach the top			
 			while (current_height > 0 AND programmed == 1) {
- 87c:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 880:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 884:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 888:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 88c:	89 2b       	or	r24, r25
- 88e:	8a 2b       	or	r24, r26
- 890:	8b 2b       	or	r24, r27
- 892:	31 f0       	breq	.+12     	; 0x8a0 <__vector_15+0x140>
- 894:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 898:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 89c:	01 97       	sbiw	r24, 0x01	; 1
- 89e:	d9 f2       	breq	.-74     	; 0x856 <__vector_15+0xf6>
+ 836:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 83a:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 83e:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 842:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 846:	89 2b       	or	r24, r25
+ 848:	8a 2b       	or	r24, r26
+ 84a:	8b 2b       	or	r24, r27
+ 84c:	31 f0       	breq	.+12     	; 0x85a <__vector_15+0x136>
+ 84e:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 852:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 856:	01 97       	sbiw	r24, 0x01	; 1
+ 858:	d9 f2       	breq	.-74     	; 0x810 <__vector_15+0xec>
 			// while ((~PINC & (1 << PC5)) && current_height > 0) {
 				current_height = current_height - 1;
 			}
 					
 			// stop the servo
 			servo(stop);
- 8a0:	80 e0       	ldi	r24, 0x00	; 0
- 8a2:	e4 db       	rcall	.-2104   	; 0x6c <servo>
- 8a4:	67 c0       	rjmp	.+206    	; 0x974 <__vector_15+0x214>
+ 85a:	80 e0       	ldi	r24, 0x00	; 0
+ 85c:	07 dc       	rcall	.-2034   	; 0x6c <servo>
+ 85e:	5c c0       	rjmp	.+184    	; 0x918 <__vector_15+0x1f4>
 					
 		} else if (current_state == light AND light_now == no AND hits == 2) {
- 8a6:	91 11       	cpse	r25, r1
- 8a8:	60 c0       	rjmp	.+192    	; 0x96a <__vector_15+0x20a>
- 8aa:	81 30       	cpi	r24, 0x01	; 1
- 8ac:	09 f0       	breq	.+2      	; 0x8b0 <__vector_15+0x150>
- 8ae:	5d c0       	rjmp	.+186    	; 0x96a <__vector_15+0x20a>
- 8b0:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <hits>
- 8b4:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <hits+0x1>
- 8b8:	02 97       	sbiw	r24, 0x02	; 2
- 8ba:	09 f0       	breq	.+2      	; 0x8be <__vector_15+0x15e>
- 8bc:	56 c0       	rjmp	.+172    	; 0x96a <__vector_15+0x20a>
-			
-			turnOnLeds(1, 0);
- 8be:	60 e0       	ldi	r22, 0x00	; 0
- 8c0:	70 e0       	ldi	r23, 0x00	; 0
- 8c2:	81 e0       	ldi	r24, 0x01	; 1
- 8c4:	90 e0       	ldi	r25, 0x00	; 0
- 8c6:	1c dc       	rcall	.-1992   	; 0x100 <turnOnLeds>
+ 860:	91 11       	cpse	r25, r1
+ 862:	5a c0       	rjmp	.+180    	; 0x918 <__vector_15+0x1f4>
+ 864:	81 30       	cpi	r24, 0x01	; 1
+ 866:	09 f0       	breq	.+2      	; 0x86a <__vector_15+0x146>
+ 868:	57 c0       	rjmp	.+174    	; 0x918 <__vector_15+0x1f4>
+ 86a:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <hits>
+ 86e:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <hits+0x1>
+ 872:	02 97       	sbiw	r24, 0x02	; 2
+ 874:	09 f0       	breq	.+2      	; 0x878 <__vector_15+0x154>
+ 876:	50 c0       	rjmp	.+160    	; 0x918 <__vector_15+0x1f4>
 			
 			current_state = dark;
- 8c8:	81 e0       	ldi	r24, 0x01	; 1
- 8ca:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <current_state>
+ 878:	81 e0       	ldi	r24, 0x01	; 1
+ 87a:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <current_state>
 
 			// start moving the shades down
 			servo(down);
- 8ce:	82 e0       	ldi	r24, 0x02	; 2
- 8d0:	cd db       	rcall	.-2150   	; 0x6c <servo>
+ 87e:	82 e0       	ldi	r24, 0x02	; 2
+ 880:	f5 db       	rcall	.-2070   	; 0x6c <servo>
 					
 			// wait until the shades reach the bottom
 			while (current_height < max_height AND programmed == 1) {
- 8d2:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 8d6:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 8da:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 8de:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 8e2:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
- 8e6:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
- 8ea:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
- 8ee:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
- 8f2:	48 17       	cp	r20, r24
- 8f4:	59 07       	cpc	r21, r25
- 8f6:	6a 07       	cpc	r22, r26
- 8f8:	7b 07       	cpc	r23, r27
- 8fa:	a0 f5       	brcc	.+104    	; 0x964 <__vector_15+0x204>
- 8fc:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 900:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 904:	01 97       	sbiw	r24, 0x01	; 1
- 906:	71 f5       	brne	.+92     	; 0x964 <__vector_15+0x204>
+ 882:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 886:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 88a:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 88e:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 892:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
+ 896:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
+ 89a:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
+ 89e:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
+ 8a2:	48 17       	cp	r20, r24
+ 8a4:	59 07       	cpc	r21, r25
+ 8a6:	6a 07       	cpc	r22, r26
+ 8a8:	7b 07       	cpc	r23, r27
+ 8aa:	a0 f5       	brcc	.+104    	; 0x914 <__vector_15+0x1f0>
+ 8ac:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 8b0:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 8b4:	01 97       	sbiw	r24, 0x01	; 1
+ 8b6:	71 f5       	brne	.+92     	; 0x914 <__vector_15+0x1f0>
 			// while ((~PINC & (1 << PC5)) && current_height < max_height) {
 				current_height = current_height + 1;
- 908:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
- 90c:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
- 910:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
- 914:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
- 918:	01 96       	adiw	r24, 0x01	; 1
- 91a:	a1 1d       	adc	r26, r1
- 91c:	b1 1d       	adc	r27, r1
- 91e:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
- 922:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
- 926:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
- 92a:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
+ 8b8:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <current_height>
+ 8bc:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <current_height+0x1>
+ 8c0:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <current_height+0x2>
+ 8c4:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <current_height+0x3>
+ 8c8:	01 96       	adiw	r24, 0x01	; 1
+ 8ca:	a1 1d       	adc	r26, r1
+ 8cc:	b1 1d       	adc	r27, r1
+ 8ce:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <current_height>
+ 8d2:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <current_height+0x1>
+ 8d6:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <current_height+0x2>
+ 8da:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <current_height+0x3>
 
 			// start moving the shades down
 			servo(down);
 					
 			// wait until the shades reach the bottom
 			while (current_height < max_height AND programmed == 1) {
- 92e:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
- 932:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
- 936:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
- 93a:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
- 93e:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
- 942:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
- 946:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
- 94a:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
- 94e:	48 17       	cp	r20, r24
- 950:	59 07       	cpc	r21, r25
- 952:	6a 07       	cpc	r22, r26
- 954:	7b 07       	cpc	r23, r27
- 956:	30 f4       	brcc	.+12     	; 0x964 <__vector_15+0x204>
- 958:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
- 95c:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
- 960:	01 97       	sbiw	r24, 0x01	; 1
- 962:	91 f2       	breq	.-92     	; 0x908 <__vector_15+0x1a8>
+ 8de:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <current_height>
+ 8e2:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <current_height+0x1>
+ 8e6:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <current_height+0x2>
+ 8ea:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <current_height+0x3>
+ 8ee:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <max_height>
+ 8f2:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <max_height+0x1>
+ 8f6:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <max_height+0x2>
+ 8fa:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <max_height+0x3>
+ 8fe:	48 17       	cp	r20, r24
+ 900:	59 07       	cpc	r21, r25
+ 902:	6a 07       	cpc	r22, r26
+ 904:	7b 07       	cpc	r23, r27
+ 906:	30 f4       	brcc	.+12     	; 0x914 <__vector_15+0x1f0>
+ 908:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <__data_end>
+ 90c:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <__data_end+0x1>
+ 910:	01 97       	sbiw	r24, 0x01	; 1
+ 912:	91 f2       	breq	.-92     	; 0x8b8 <__vector_15+0x194>
 			// while ((~PINC & (1 << PC5)) && current_height < max_height) {
 				current_height = current_height + 1;
 			}
 					
 			// stop the servo
 			servo(stop);
- 964:	80 e0       	ldi	r24, 0x00	; 0
- 966:	82 db       	rcall	.-2300   	; 0x6c <servo>
- 968:	05 c0       	rjmp	.+10     	; 0x974 <__vector_15+0x214>
-					
-		} else {
-			turnOnLeds(3, 0);
- 96a:	60 e0       	ldi	r22, 0x00	; 0
- 96c:	70 e0       	ldi	r23, 0x00	; 0
- 96e:	83 e0       	ldi	r24, 0x03	; 3
- 970:	90 e0       	ldi	r25, 0x00	; 0
- 972:	c6 db       	rcall	.-2164   	; 0x100 <turnOnLeds>
+ 914:	80 e0       	ldi	r24, 0x00	; 0
+ 916:	aa db       	rcall	.-2220   	; 0x6c <servo>
 			current_state = current_state;
 		}
 		
 		// Clear ADIF by writing one to it
 		// Clearing ADC bit
 		ADCSRA|=(1<<ADIF);		
- 974:	ea e7       	ldi	r30, 0x7A	; 122
- 976:	f0 e0       	ldi	r31, 0x00	; 0
- 978:	80 81       	ld	r24, Z
- 97a:	80 61       	ori	r24, 0x10	; 16
- 97c:	80 83       	st	Z, r24
+ 918:	ea e7       	ldi	r30, 0x7A	; 122
+ 91a:	f0 e0       	ldi	r31, 0x00	; 0
+ 91c:	80 81       	ld	r24, Z
+ 91e:	80 61       	ori	r24, 0x10	; 16
+ 920:	80 83       	st	Z, r24
 		
 	}
 	
 }
- 97e:	ff 91       	pop	r31
- 980:	ef 91       	pop	r30
- 982:	bf 91       	pop	r27
- 984:	af 91       	pop	r26
- 986:	9f 91       	pop	r25
- 988:	8f 91       	pop	r24
- 98a:	7f 91       	pop	r23
- 98c:	6f 91       	pop	r22
- 98e:	5f 91       	pop	r21
- 990:	4f 91       	pop	r20
- 992:	3f 91       	pop	r19
- 994:	2f 91       	pop	r18
- 996:	0f 90       	pop	r0
- 998:	0f be       	out	0x3f, r0	; 63
- 99a:	0f 90       	pop	r0
- 99c:	1f 90       	pop	r1
- 99e:	18 95       	reti
+ 922:	ff 91       	pop	r31
+ 924:	ef 91       	pop	r30
+ 926:	bf 91       	pop	r27
+ 928:	af 91       	pop	r26
+ 92a:	9f 91       	pop	r25
+ 92c:	8f 91       	pop	r24
+ 92e:	7f 91       	pop	r23
+ 930:	6f 91       	pop	r22
+ 932:	5f 91       	pop	r21
+ 934:	4f 91       	pop	r20
+ 936:	3f 91       	pop	r19
+ 938:	2f 91       	pop	r18
+ 93a:	0f 90       	pop	r0
+ 93c:	0f be       	out	0x3f, r0	; 63
+ 93e:	0f 90       	pop	r0
+ 940:	1f 90       	pop	r1
+ 942:	18 95       	reti
 
-000009a0 <_exit>:
- 9a0:	f8 94       	cli
+00000944 <_exit>:
+ 944:	f8 94       	cli
 
-000009a2 <__stop_program>:
- 9a2:	ff cf       	rjmp	.-2      	; 0x9a2 <__stop_program>
+00000946 <__stop_program>:
+ 946:	ff cf       	rjmp	.-2      	; 0x946 <__stop_program>
